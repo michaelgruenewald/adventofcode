@@ -29,12 +29,12 @@ buses = [Bus(int(s), offset) for offset, s in enumerate(lines[1].split(",")) if 
 
 t, d = 0, 1
 for bus in buses:
-    t1 = t
-    while (t1 + bus.offset) % bus.id != 0:
-        t1 += d
-    t2 = t1 + d
-    while (t2 + bus.offset) % bus.id != 0:
-        t2 += d
+    # all departures of this bus that fit the pattern with the previous busses
+    overlaps = (ts for ts in count(t, d) if (ts + bus.offset) % bus.id == 0)
+    # find the first two of them
+    t1 = next(overlaps)
+    t2 = next(overlaps)
+    # use the first one as the new starting point, and the delta for the next search
     t, d = t1, t2 - t1
 
 print(t)
