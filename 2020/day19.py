@@ -96,7 +96,7 @@ print(sum(1 for line in message_blob.splitlines() if matcher.fullmatch(line)))
 
 # part 2
 
-max_len = max(len(line) for line in message_blob.splitlines()) // 2 + 1
+max_len = max(len(line) for line in message_blob.splitlines())
 
 
 @lru_cache
@@ -109,11 +109,7 @@ def rule2re2(n):
         # REs don't like a^n+b^n expressions, let's cheat
         r42 = rule2re2("42")
         r31 = rule2re2("31")
-        return (
-            "("
-            + "|".join(f"({r42}{{{x}}}{r31}{{{x}}})" for x in range(1, max_len))
-            + ")"
-        )
+        return r42 + f"({r42}" * max_len + f"{r31})?" * max_len + r31
     return "(" + "|".join("".join(rule2re2(x) for x in p) for p in rules[n]) + ")"
 
 
