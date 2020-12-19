@@ -84,13 +84,13 @@ for line in rule_blob.splitlines():
 
 
 @lru_cache
-def rule2re(n):
+def rule_to_re(n):
     if isinstance(rules[n], str):
         return rules[n]
-    return "(" + "|".join("".join(rule2re(x) for x in p) for p in rules[n]) + ")"
+    return "(" + "|".join("".join(rule_to_re(x) for x in p) for p in rules[n]) + ")"
 
 
-matcher = re.compile(rule2re("0"))
+matcher = re.compile(rule_to_re("0"))
 print(sum(1 for line in message_blob.splitlines() if matcher.fullmatch(line)))
 
 
@@ -100,18 +100,18 @@ max_len = max(len(line) for line in message_blob.splitlines())
 
 
 @lru_cache
-def rule2re2(n):
+def rule_to_re2(n):
     if isinstance(rules[n], str):
         return rules[n]
     elif n == "8":
-        return rule2re2("42") + "+"
+        return rule_to_re2("42") + "+"
     elif n == "11":
         # REs don't like a^n+b^n expressions, let's cheat
-        r42 = rule2re2("42")
-        r31 = rule2re2("31")
-        return r42 + f"({r42}" * max_len + f"{r31})?" * max_len + r31
-    return "(" + "|".join("".join(rule2re2(x) for x in p) for p in rules[n]) + ")"
+        r42 = rule_to_re2("42")
+        r31 = rule_to_re2("31")
+        return f"({r42}" + f"({r42}" * max_len + f"{r31})?" * max_len + f"{r31})"
+    return "(" + "|".join("".join(rule_to_re2(x) for x in p) for p in rules[n]) + ")"
 
 
-matcher = re.compile(rule2re2("0"))
+matcher = re.compile(rule_to_re2("0"))
 print(sum(1 for line in message_blob.splitlines() if matcher.fullmatch(line)))
