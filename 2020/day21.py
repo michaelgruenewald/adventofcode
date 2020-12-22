@@ -13,31 +13,40 @@ sqjhc mxmxvkd sbzzf (contains fish)
 
 problem = open("input21.txt").read()
 
-all_ingreds = defaultdict(int)
-groups = defaultdict(set)
+all_ingredients = defaultdict(int)
+allergen_groups = defaultdict(set)
 
 for line in problem.splitlines():
-    ingred_blob, allergen_blob = re.fullmatch(r"(.*) \(contains (.*)\)", line).groups()
-    ingreds = frozenset(ingred_blob.split())
+    ingredient_blob, allergen_blob = re.fullmatch(
+        r"(.*) \(contains (.*)\)", line
+    ).groups()
+    ingredients = frozenset(ingredient_blob.split())
     allergens = frozenset(allergen_blob.split(", "))
     for allergen in allergens:
-        groups[allergen].add(ingreds)
-    for ingred in ingreds:
-        all_ingreds[ingred] += 1
+        allergen_groups[allergen].add(ingredients)
+    for ingredient in ingredients:
+        all_ingredients[ingredient] += 1
 
-reduced = {allergen: reduce(lambda a, b: a & b, g) for allergen, g in groups.items()}
+allergen_candidates = {
+    allergen: reduce(lambda a, b: a & b, groups)
+    for allergen, groups in allergen_groups.items()
+}
 chosen = {}
 
-while reduced:
-    allergen = next(a for a, g in reduced.items() if len(g - set(chosen.values())) == 1)
-    (chosen[allergen],) = reduced[allergen] - set(chosen.values())
-    del reduced[allergen]
+while allergen_candidates:
+    allergen = next(
+        allergen
+        for allergen, candidates in allergen_candidates.items()
+        if len(candidates.difference(chosen.values())) == 1
+    )
+    (chosen[allergen],) = allergen_candidates[allergen].difference(chosen.values())
+    del allergen_candidates[allergen]
 
 # part 1
 
-safe = set(all_ingreds.keys()) - set(chosen.values())
-safe_appears = sum(all_ingreds[ingred] for ingred in safe)
-print(safe_appears, len(safe), len(all_ingreds))
+safe = set(all_ingredients.keys()).difference(chosen.values())
+safe_appears = sum(all_ingredients[ingredient] for ingredient in safe)
+print(safe_appears, len(safe), len(all_ingredients))
 
 # part 2
 
