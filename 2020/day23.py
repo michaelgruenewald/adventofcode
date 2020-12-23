@@ -10,46 +10,49 @@ class Cup(object):
     def __init__(self, label, after):
         self.label = label
         if after:
+            self.index = after.index
+            assert label not in self.index
             self.prev = after
             self.next = after.next
             after.next.prev = self
             after.next = self
         else:
+            self.index = {}
             self.prev = self.next = self
+        self.index[label] = self
 
     def drop(self):
         self.prev.next, self.next.prev = self.next, self.prev
+        del self.index[self.label]
         return self.label
+
+    def other(self, label):
+        return self.index[label]
 
     def __repr__(self):
         return f"<Cup {self.label} [{self.prev.label}/{self.next.label}]>"
 
     def __iter__(self):
-        current = self
-        while True:
+        yield self
+        current = self.next
+        while current is not self:
             yield current
             current = current.next
-            if current == self:
-                break
 
 
 def run(labels, iterations=100):
     current = reduce(lambda prev, label: Cup(label, prev), labels, None).next
-    by_label = {c.label: c for c in current}
+    highest = max(cup.label for cup in current)
 
     for _ in range(iterations):
-        dropped_labels = [current.next.drop() for _ in range(3)]
-        dest_label = current.label - 1
-        while dest_label in dropped_labels or dest_label < 1:
-            dest_label -= 1
-            if dest_label < 1:
-                dest_label = len(by_label)
-        dest = by_label[dest_label]
-        for label in dropped_labels:
-            by_label[label] = dest = Cup(label, dest)
+        picked = [current.next.drop() for _ in range(3)]
+        dest = current.label - 1
+        while dest in picked or dest < 1:
+            dest = highest if dest == 0 else dest - 1
+        reduce(lambda after, label: Cup(label, after), picked, current.other(dest))
         current = current.next
 
-    return by_label[1]
+    return current.other(1)
 
 
 # part 1
