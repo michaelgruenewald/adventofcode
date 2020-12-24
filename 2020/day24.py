@@ -58,11 +58,8 @@ for i in range(100):
     y_max = max(y for (x, y), black in tiles.items() if black)
 
     new_tiles = {}
-    for x in range(x_min - 2, x_max + 3):
-        for y in range(y_min - 1, y_max + 2):
-            if (x + y) % 2:
-                continue
-
+    for y in range(y_min - 1, y_max + 2):
+        for x in range(x_min - 2 - (y + x_min) % 2, x_max + 3, 2):
             black = tiles.get((x, y), False)
             adjacent = sum(
                 tiles.get((x + Δx, y + Δy), False) for Δx, Δy in DIRS.values()
