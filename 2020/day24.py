@@ -56,16 +56,18 @@ for i in range(100):
     x_max = max(x for (x, y), black in tiles.items() if black)
     y_min = min(y for (x, y), black in tiles.items() if black)
     y_max = max(y for (x, y), black in tiles.items() if black)
-
-    new_tiles = {}
-    for y in range(y_min - 1, y_max + 2):
-        for x in range(x_min - 2 - (y + x_min) % 2, x_max + 3, 2):
-            black = tiles.get((x, y), False)
-            adjacent = sum(
-                tiles.get((x + Δx, y + Δy), False) for Δx, Δy in DIRS.values()
+    tiles = {
+        (x, y): 0 < adjacent <= 2 if black else adjacent == 2
+        for x, y, black, adjacent in (
+            (
+                x,
+                y,
+                tiles.get((x, y), False),
+                sum(tiles.get((x + Δx, y + Δy), False) for Δx, Δy in DIRS.values()),
             )
-
-            new_tiles[x, y] = black and 0 < adjacent <= 2 or not black and adjacent == 2
-    tiles = new_tiles
+            for y in range(y_min - 1, y_max + 2)
+            for x in range(x_min - 2 - (y + x_min) % 2, x_max + 3, 2)
+        )
+    }
 
 print(sum(tiles.values()))
