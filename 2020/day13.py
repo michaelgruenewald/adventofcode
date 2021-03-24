@@ -25,7 +25,9 @@ print((nextdeparture - time) * nextbus)
 # part 2
 
 Bus = namedtuple("Bus", ("id", "offset"))
-buses = [Bus(int(s), offset) for offset, s in enumerate(lines[1].split(",")) if s != "x"]
+buses = [
+    Bus(int(s), offset) for offset, s in enumerate(lines[1].split(",")) if s != "x"
+]
 
 t, d = 0, 1
 for bus in buses:
