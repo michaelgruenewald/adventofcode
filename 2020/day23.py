@@ -6,7 +6,7 @@ start = list(map(int, "389125467"))
 start = list(map(int, "158937462"))
 
 
-class Cup(object):
+class Cup:
     def __init__(self, label, after):
         self.label = label
         if after:
@@ -28,9 +28,6 @@ class Cup(object):
 
     def other(self, label):
         return self.index[label]
-
-    def __repr__(self):
-        return f"<Cup {self.label} [{self.prev.label}/{self.next.label}]>"
 
     def __iter__(self):
         yield self
