@@ -18,5 +18,5 @@ def seatno(line):
 print(max(seatno(line) for line in lines))
 
 # part 2
-seatnos = set(seatno(line) for line in lines)
-print((set(s + 1 for s in seatnos) & set(s - 1 for s in seatnos)) - seatnos)
+seatnos = {seatno(line) for line in lines}
+print(({s + 1 for s in seatnos} & {s - 1 for s in seatnos}) - seatnos)
