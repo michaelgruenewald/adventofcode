@@ -14,15 +14,19 @@ lines = open("input18.txt").read().splitlines()
 # part 1
 
 
-class Evaluator1(object):
+class Evaluator1:
     def __init__(self, line):
         self.tokens = re.findall(r"[()*+]|\d+", line)
 
+    def shift(self, *, when=None):
+        if not when or self.tokens and when(self.tokens[0]):
+            return self.tokens.pop(0)
+
     def nextV(self):
-        token = self.tokens.pop(0)
+        token = self.shift()
         if token == "(":
             v = self.nextOp()
-            br = self.tokens.pop(0)
+            br = self.shift()
             assert br == ")"
             return v
         else:
@@ -30,8 +34,7 @@ class Evaluator1(object):
 
     def nextOp(self):
         v = self.nextV()
-        while self.tokens and self.tokens[0] in ("+", "*"):
-            op = self.tokens.pop(0)
+        while op := self.shift(when=lambda e: e in ("+", "*")):
             if op == "+":
                 v += self.nextV()
             elif op == "*":
@@ -51,15 +54,19 @@ print(sum(results))
 # part 2
 
 
-class Evaluator2(object):
+class Evaluator2:
     def __init__(self, line):
         self.tokens = re.findall(r"[()*+]|\d+", line)
 
+    def shift(self, when=None):
+        if not when or self.tokens and when(self.tokens[0]):
+            return self.tokens.pop(0)
+
     def nextV(self):
-        token = self.tokens.pop(0)
+        token = self.shift()
         if token == "(":
             v = self.nextMul()
-            br = self.tokens.pop(0)
+            br = self.shift()
             assert br == ")"
             return v
         else:
@@ -67,15 +74,13 @@ class Evaluator2(object):
 
     def nextAdd(self):
         v = self.nextV()
-        while self.tokens and self.tokens[0] == "+":
-            self.tokens.pop(0)
+        while self.shift(when=lambda e: e == "+"):
             v += self.nextV()
         return v
 
     def nextMul(self):
         v = self.nextAdd()
-        while self.tokens and self.tokens[0] == "*":
-            self.tokens.pop(0)
+        while self.shift(when=lambda e: e == "*"):
             v *= self.nextAdd()
         return v
 
