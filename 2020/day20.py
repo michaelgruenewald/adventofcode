@@ -133,7 +133,7 @@ def flip_edge(edge):
 cameras = {}
 camera_bits = {}
 for camera_blob in camera_data.split("\n\n"):
-    (camera_id,) = re.findall("\d+", camera_blob)
+    (camera_id,) = re.findall(r"\d+", camera_blob)
     camera_id = int(camera_id)
     tile = camera_blob.splitlines()[1:]
     # add that camera
@@ -169,7 +169,7 @@ for camera_id, edges in cameras.items():
         edge_to_camera[e].add(camera_id)
 
 ctr = Counter(next(iter(v)) for k, v in edge_to_camera.items() if len(v) == 1)
-corners = set(abs(c) for c, v in ctr.items() if v >= 2)
+corners = {abs(c) for c, v in ctr.items() if v >= 2}
 assert len(corners) == 4
 
 print(prod(corners), corners)
@@ -257,12 +257,12 @@ MONSTER = """\
  #  #  #  #  #  #   
 """
 
-monster = set(
+monster = {
     (row, col)
     for row, line in enumerate(MONSTER.splitlines())
     for col, c in enumerate(line)
     if c == "#"
-)
+}
 
 ROTATE = [
     lambda y, x: (y, x),
