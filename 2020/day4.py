@@ -19,10 +19,13 @@ iyr:2011 ecl:brn hgt:59in
 
 lines = open("input4.txt").read()
 
-passports = [{ k: v for k, _, v in (d.partition(":") for d in passport.split()) } for passport in lines.split("\n\n")]
+passports = [
+    {k: v for k, _, v in (d.partition(":") for d in passport.split())}
+    for passport in lines.split("\n\n")
+]
 
 # part 1
-required = set(("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"))
+required = {"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"}
 print(sum(required.issubset(p.keys()) for p in passports))
 
 # part 2
@@ -33,6 +36,11 @@ rules = {
     "hgt": r"1[5-8][0-9]cm|19[0-3]cm|59in|6[0-9]in|7[0-6]in",
     "hcl": r"#[0-9a-f]{6}",
     "ecl": r"amb|blu|brn|gry|grn|hzl|oth",
-    "pid": r"[0-9]{9}"
+    "pid": r"[0-9]{9}",
 }
-print(sum(all(f in p and re.fullmatch(e, p[f]) for f, e in rules.items()) for p in passports))
+print(
+    sum(
+        all(f in p and re.fullmatch(e, p[f]) for f, e in rules.items())
+        for p in passports
+    )
+)
