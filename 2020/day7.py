@@ -32,14 +32,19 @@ d = {}
 for line in lines:
     container, containees = LINE_PATTERN.fullmatch(line).groups()
     if containees:
-        d[container] = [CONTAIN_PATTERN.fullmatch(x).groups() for x in containees.split(", ")]
+        d[container] = [
+            CONTAIN_PATTERN.fullmatch(x).groups() for x in containees.split(", ")
+        ]
     else:
         d[container] = []
 
 
 # part 1
 def can_have_shiny_gold(color):
-    return color == "shiny gold" or any(can_have_shiny_gold(col) for num, col in d[color])
+    return color == "shiny gold" or any(
+        can_have_shiny_gold(col) for num, col in d[color]
+    )
+
 
 print(sum(can_have_shiny_gold(c) for c in d.keys()) - 1)
 
@@ -47,5 +52,6 @@ print(sum(can_have_shiny_gold(c) for c in d.keys()) - 1)
 # part 2
 def sub_bag_count(color):
     return sum(int(num) * (sub_bag_count(col) + 1) for num, col in d[color])
+
 
 print(sub_bag_count("shiny gold"))
