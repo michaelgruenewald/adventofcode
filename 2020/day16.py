@@ -78,15 +78,21 @@ valid_tickets = [
 possible = defaultdict(list)
 for rule in rules:
     for i in range(len(valid_tickets[0])):
-        if all(any(ticket[i] in range for range in rule.ranges) for ticket in valid_tickets):
+        if all(
+            any(ticket[i] in range for range in rule.ranges) for ticket in valid_tickets
+        ):
             possible[i].append(rule.name)
 
 found = {}
 while any(possible.values()):
-    pos, name = next((pos, names[0]) for pos, names in possible.items() if len(names) == 1)
+    pos, name = next(
+        (pos, names[0]) for pos, names in possible.items() if len(names) == 1
+    )
     found[name] = pos
     for v in possible.values():
         if name in v:
             v.remove(name)
 
-print(prod(my_ticket[idx] for name, idx in found.items() if name.startswith("departure")))
+print(
+    prod(my_ticket[idx] for name, idx in found.items() if name.startswith("departure"))
+)
