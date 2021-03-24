@@ -51,7 +51,7 @@ lines = """\
 
 lines = open("input10.txt").read().splitlines()
 
-adapters = set(int(x) for x in lines)
+adapters = {int(x) for x in lines}
 
 starts = {0} | adapters
 
@@ -68,7 +68,7 @@ counts = defaultdict(int)
 pos = target
 while pos > 0:
     previous = max(connections[pos])
-    counts[pos-previous] += 1
+    counts[pos - previous] += 1
     pos = previous
 
 print(counts[1] * counts[3], counts)
