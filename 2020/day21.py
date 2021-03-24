@@ -34,12 +34,12 @@ allergen_candidates = {
 chosen = {}
 
 while allergen_candidates:
-    allergen = next(
-        allergen
+    allergen, (ingredient,) = next(
+        (allergen, ingredients)
         for allergen, candidates in allergen_candidates.items()
-        if len(candidates.difference(chosen.values())) == 1
+        if len(ingredients := candidates.difference(chosen.values())) == 1
     )
-    (chosen[allergen],) = allergen_candidates[allergen].difference(chosen.values())
+    chosen[allergen] = ingredient
     del allergen_candidates[allergen]
 
 # part 1
