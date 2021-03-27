@@ -3,6 +3,7 @@
 LEFT = 1
 RIGHT = 2
 
+
 def simulate(players, last):
     """
     >>> max(simulate(9, 25))
@@ -35,10 +36,10 @@ def simulate(players, last):
 
     scores = [0] * players
 
-    for n in xrange(1, last+1):
+    for n in range(1, last + 1):
         if n % 23 == 0:
             current = current[LEFT][LEFT][LEFT][LEFT][LEFT][LEFT][LEFT]
-            scores[(n-1) % players] += n + current[0]
+            scores[(n - 1) % players] += n + current[0]
 
             current[LEFT][RIGHT] = current[RIGHT]
             current[RIGHT][LEFT] = current[LEFT]

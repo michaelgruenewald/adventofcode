@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-source = list(file("input5.txt").read().strip())
+source = list(open("input5.txt").read().strip())
 
 stack = []
 for c in source:
@@ -12,7 +12,7 @@ for c in source:
         else:
             break
 
-print len(stack)
+print(len(stack))
 
 
 types = set(c.lower() for c in source)
@@ -20,7 +20,7 @@ results = []
 for t in types:
     stack = []
     for c in source:
-        if c.lower() != t: 
+        if c.lower() != t:
             stack.append(c)
         while len(stack) >= 2:
             if stack[-1].lower() == stack[-2].lower() and stack[-1] != stack[-2]:
@@ -30,4 +30,4 @@ for t in types:
                 break
     results.append((len(stack), t))
 
-print min(results)
+print(min(results))

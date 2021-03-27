@@ -10,11 +10,17 @@ from itertools import groupby
 # Step D must be finished before step E can begin.
 # Step F must be finished before step E can begin.
 # """.splitlines()
-lines = file("input7.txt").readlines()
+lines = open("input7.txt").readlines()
 
-deps = { k: set(v[0] for v in vs) for k, vs in groupby(sorted((re.findall(r"\b[A-Z]\b", line) for line in lines), key=lambda x: x[1]), lambda x: x[1]) }
+deps = {
+    k: set(v[0] for v in vs)
+    for k, vs in groupby(
+        sorted((re.findall(r"\b[A-Z]\b", line) for line in lines), key=lambda x: x[1]),
+        lambda x: x[1],
+    )
+}
 
-steps = set(deps.keys()) | set(v for vs in deps.values() for v in vs)
+steps = set(deps.keys()) | set(v for vs in list(deps.values()) for v in vs)
 done = list()
 
 
@@ -23,13 +29,21 @@ t = 0
 while len(done) != len(steps):
     try:
         while len(workers) < 5:
-            nextstep = (step for step in steps if step not in done and step not in (w[1] for w in workers) and all(d in done for d in deps.get(step, set()))).next()
+            nextstep = next(
+                (
+                    step
+                    for step in steps
+                    if step not in done
+                    and step not in (w[1] for w in workers)
+                    and all(d in done for d in deps.get(step, set()))
+                )
+            )
             workers.append((ord(nextstep) - 64 + t + 60, nextstep))
     except StopIteration:
-        pass # Ok
+        pass  # Ok
     worker_done = min(workers)
     workers.remove(worker_done)
     t, step = worker_done
     done.append(step)
 
-print "".join(done), t
+print("".join(done), t)

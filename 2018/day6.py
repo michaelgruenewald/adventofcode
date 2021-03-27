@@ -10,9 +10,9 @@ Point = namedtuple("Point", ["x", "y"])
 # 3, 4
 # 5, 5
 # 8, 9""".splitlines()
-i = file("input6.txt")
+i = open("input6.txt")
 
-points = [Point(*map(int, d)) for d in csv.reader(i)]
+points = [Point(*list(map(int, d))) for d in csv.reader(i)]
 
 xmin = min(p.x for p in points)
 xmax = max(p.x for p in points)
@@ -30,9 +30,11 @@ for x in range(xmin, xmax + 1):
         if sum(d[0] for d in deltas) < 10000:
             area10000.add(Point(x, y))
 
-print sorted(
-    (len(v), k)
-    for k, v in ownedby.items()
-    if points[k].x not in [xmin, xmax] and points[k].y not in [ymin, ymax]
-)[-1]
-print len(area10000)
+print(
+    sorted(
+        (len(v), k)
+        for k, v in list(ownedby.items())
+        if points[k].x not in [xmin, xmax] and points[k].y not in [ymin, ymax]
+    )[-1]
+)
+print(len(area10000))

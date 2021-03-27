@@ -3,7 +3,7 @@ from collections import *
 from itertools import *
 import re
 
-lines = sorted(file("input4.txt").readlines())
+lines = sorted(open("input4.txt").readlines())
 # lines = """[1518-11-01 00:00] Guard #10 begins shift
 # [1518-11-01 00:05] falls asleep
 # [1518-11-01 00:25] wakes up
@@ -31,7 +31,7 @@ for l in lines:
         continue
     m = re.match(r".*:(\d+)] (falls asleep|wakes up)", l)
     if not m:
-        1/0
+        1 / 0
     if m.group(2) == "falls asleep" and s is None:
         s = int(m.group(1))
     elif m.group(2) == "wakes up" and s is not None:
@@ -39,10 +39,16 @@ for l in lines:
             sleeppatterns[guardid][i] += 1
         s = None
     else:
-        2/0
+        2 / 0
 
-guardstats = [(sum(p.values()), max(p.items(), key=lambda x: x[1])[0], guardid) for guardid, p in sleeppatterns.items()]
-print max(guardstats)
+guardstats = [
+    (sum(p.values()), max(list(p.items()), key=lambda x: x[1])[0], guardid)
+    for guardid, p in list(sleeppatterns.items())
+]
+print(max(guardstats))
 
-guardstats2 = [(max(p.items(), key = lambda x: x[1]), guardid) for guardid, p in sleeppatterns.items()]
-print max(guardstats2, key = lambda x: x[0][1])
+guardstats2 = [
+    (max(list(p.items()), key=lambda x: x[1]), guardid)
+    for guardid, p in list(sleeppatterns.items())
+]
+print(max(guardstats2, key=lambda x: x[0][1]))
