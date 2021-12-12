@@ -27,75 +27,44 @@ fn parse(input: &str) -> HashMap<(isize, isize), usize> {
     map
 }
 
-pub fn part1(input: &str) -> usize {
-    let mut map = parse(input);
+fn step(map: &mut HashMap<(isize, isize), usize>) -> usize {
+    for e in map.values_mut() {
+        *e += 1;
+    }
 
-    let mut flashes = 0;
-    for _step in 1..=100 {
-        for e in map.values_mut() {
-            *e += 1;
-        }
+    let mut flashed = HashSet::new();
 
-        let mut todo = Vec::from_iter(map.keys().cloned());
-        let mut flashed = HashSet::new();
-
-        while let Some(pos) = todo.pop() {
-            if map[&pos] > 9 && !flashed.contains(&pos) {
-                flashed.insert(pos);
-                for (drow, dcol) in ADJ {
-                    let apos = (pos.0 + drow, pos.1 + dcol);
-                    if let Some(e) = map.get_mut(&apos) {
-                        *e += 1;
-                        todo.push(apos);
-                    }
+    let mut todo = Vec::from_iter(map.keys().cloned());
+    while let Some(pos) = todo.pop() {
+        if map[&pos] > 9 && !flashed.contains(&pos) {
+            flashed.insert(pos);
+            for (drow, dcol) in ADJ {
+                let apos = (pos.0 + drow, pos.1 + dcol);
+                if let Some(e) = map.get_mut(&apos) {
+                    *e += 1;
+                    todo.push(apos);
                 }
             }
         }
-
-        flashes += flashed.len();
-
-        for pos in flashed {
-            *map.get_mut(&pos).unwrap() = 0;
-        }
     }
 
-    flashes
+    for pos in &flashed {
+        *map.get_mut(pos).unwrap() = 0;
+    }
+
+    flashed.len()
+}
+
+pub fn part1(input: &str) -> usize {
+    let mut map = parse(input);
+
+    (1..=100).map(|_| step(&mut map)).sum()
 }
 
 pub fn part2(input: &str) -> usize {
     let mut map = parse(input);
 
-    for step in 1.. {
-        for e in map.values_mut() {
-            *e += 1;
-        }
-
-        let mut todo = Vec::from_iter(map.keys().cloned());
-        let mut flashed = HashSet::new();
-
-        while let Some(pos) = todo.pop() {
-            if map[&pos] > 9 && !flashed.contains(&pos) {
-                flashed.insert(pos);
-                for (drow, dcol) in ADJ {
-                    let apos = (pos.0 + drow, pos.1 + dcol);
-                    if let Some(e) = map.get_mut(&apos) {
-                        *e += 1;
-                        todo.push(apos);
-                    }
-                }
-            }
-        }
-
-        if flashed.len() == map.len() {
-            return step;
-        }
-
-        for pos in flashed {
-            *map.get_mut(&pos).unwrap() = 0;
-        }
-    }
-
-    unreachable!();
+    (1..).find(|_| step(&mut map) == map.len()).unwrap()
 }
 
 #[cfg(test)]
