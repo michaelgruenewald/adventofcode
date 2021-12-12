@@ -8,7 +8,7 @@ enum Instr {
 
 impl Instr {
     fn parse(input: &str) -> impl Iterator<Item = Self> + '_ {
-        input.split_terminator("\n").map(|line| {
+        input.split_terminator('\n').map(|line| {
             let mut words = line.split_whitespace();
             let direction = words.next().expect("first term");
             let distance = words
@@ -65,9 +65,9 @@ impl Add<Instr> for State1 {
     }
 }
 
-impl Into<usize> for State1 {
-    fn into(self) -> usize {
-        self.depth * self.horizontal
+impl From<State1> for usize {
+    fn from(state: State1) -> Self {
+        state.depth * state.horizontal
     }
 }
 
@@ -106,9 +106,9 @@ impl Add<Instr> for State2 {
     }
 }
 
-impl Into<usize> for State2 {
-    fn into(self) -> usize {
-        self.depth * self.horizontal
+impl From<State2> for usize {
+    fn from(state: State2) -> Self {
+        state.depth * state.horizontal
     }
 }
 

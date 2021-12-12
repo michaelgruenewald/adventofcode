@@ -10,14 +10,14 @@ fn parse_input(input: &str) -> Input {
     let numbers = sections
         .next()
         .unwrap()
-        .split(",")
+        .split(',')
         .map(|s| s.parse::<usize>().unwrap())
         .collect();
 
     let boards = sections
         .map(|section| {
             section
-                .split_terminator("\n")
+                .split_terminator('\n')
                 .map(|line| {
                     line.split_whitespace()
                         .map(|s| s.parse::<usize>().unwrap())
@@ -27,7 +27,7 @@ fn parse_input(input: &str) -> Input {
         })
         .collect();
 
-    return Input { numbers, boards };
+    Input { numbers, boards }
 }
 
 struct State {
@@ -89,11 +89,11 @@ fn run(input: &str, which: Which) -> usize {
 }
 
 pub fn part1(input: &str) -> usize {
-    return run(input, Which::First);
+    run(input, Which::First)
 }
 
 pub fn part2(input: &str) -> usize {
-    return run(input, Which::Last);
+    run(input, Which::Last)
 }
 
 #[cfg(test)]

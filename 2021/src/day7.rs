@@ -4,7 +4,7 @@ fn run(input: &str, ex: bool) -> usize {
     let mut positions = HashMap::new();
     input
         .trim()
-        .split(",")
+        .split(',')
         .map(|s| s.parse::<usize>().unwrap())
         .for_each(|pos| {
             positions.insert(pos, positions.get(&pos).unwrap_or(&0) + 1);

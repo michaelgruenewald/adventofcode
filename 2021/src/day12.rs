@@ -3,8 +3,8 @@ use std::collections::HashSet;
 
 fn run(input: &str, allow_one_small_twice: bool) -> usize {
     let mut graph = HashMap::new();
-    for line in input.split_terminator("\n") {
-        let (from, to) = line.split_once("-").unwrap();
+    for line in input.split_terminator('\n') {
+        let (from, to) = line.split_once('-').unwrap();
 
         if !graph.contains_key(from) {
             graph.insert(from, HashSet::new());
@@ -33,8 +33,8 @@ fn run(input: &str, allow_one_small_twice: bool) -> usize {
                 continue;
             }
 
-            let mut new_path = Vec::from(path.clone());
-            new_path.push(&next);
+            let mut new_path = path.clone();
+            new_path.push(next);
 
             paths.push((new_path, saw_one_small_twice || is_small && seen_before));
         }

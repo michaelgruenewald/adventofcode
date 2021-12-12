@@ -12,7 +12,7 @@ struct Line {
 fn parse(input: &str) -> Vec<Line> {
     let line_re = Regex::new(r"(\d+),(\d+) -> (\d+),(\d+)").unwrap();
     input
-        .split_terminator("\n")
+        .split_terminator('\n')
         .map(|line| {
             let captures = line_re.captures(line).unwrap();
             Line {

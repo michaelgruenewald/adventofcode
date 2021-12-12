@@ -1,5 +1,5 @@
 pub fn part1(input: &str) -> usize {
-    let numbers = input.split_terminator("\n").collect::<Vec<_>>();
+    let numbers = input.split_terminator('\n').collect::<Vec<_>>();
     let length = numbers.len();
     let width = numbers[0].len();
 
@@ -13,14 +13,14 @@ pub fn part1(input: &str) -> usize {
     let gamma = sums
         .iter()
         .fold(0, |a, sum| a * 2 + (if *sum > length / 2 { 1 } else { 0 }));
-    let epsilon = gamma ^ ((2 << width - 1) - 1);
+    let epsilon = gamma ^ ((2 << (width - 1)) - 1);
 
     gamma * epsilon
 }
 
 pub fn part2(input: &str) -> usize {
-    let mut numbers = input.split_terminator("\n").collect::<Vec<_>>();
-    numbers.sort();
+    let mut numbers = input.split_terminator('\n').collect::<Vec<_>>();
+    numbers.sort_unstable();
 
     let mut s = &numbers[..];
     for pos in 0.. {

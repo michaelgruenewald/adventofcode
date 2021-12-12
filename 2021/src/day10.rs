@@ -7,7 +7,7 @@ enum Health {
 use Health::*;
 
 fn process(input: &str) -> impl Iterator<Item = Health> + '_ {
-    input.split_terminator("\n").map(|line| {
+    input.split_terminator('\n').map(|line| {
         let mut stack = vec![];
         let mut chars = line.chars();
         loop {
@@ -58,7 +58,7 @@ pub fn part2(input: &str) -> usize {
             _ => None,
         })
         .collect::<Vec<_>>();
-    scores.sort();
+    scores.sort_unstable();
     scores[scores.len() / 2]
 }
 

@@ -2,7 +2,7 @@ fn run(input: &str, days: usize) -> usize {
     let mut generations = vec![0; 9];
     input
         .trim()
-        .split(",")
+        .split(',')
         .map(|s| s.parse::<usize>().unwrap())
         .for_each(|fish| generations[fish] += 1);
 

@@ -15,7 +15,7 @@ const ADJ: [(isize, isize); 8] = [
 fn parse(input: &str) -> HashMap<(isize, isize), usize> {
     let mut map = HashMap::new();
 
-    for (row, line) in input.split_terminator("\n").enumerate() {
+    for (row, line) in input.split_terminator('\n').enumerate() {
         for (col, ch) in line.trim().chars().enumerate() {
             map.insert(
                 (row as isize, col as isize),
@@ -32,7 +32,7 @@ pub fn part1(input: &str) -> usize {
 
     let mut flashes = 0;
     for _step in 1..=100 {
-        for (_, e) in &mut map {
+        for e in map.values_mut() {
             *e += 1;
         }
 
@@ -66,7 +66,7 @@ pub fn part2(input: &str) -> usize {
     let mut map = parse(input);
 
     for step in 1.. {
-        for (_, e) in &mut map {
+        for e in map.values_mut() {
             *e += 1;
         }
 
