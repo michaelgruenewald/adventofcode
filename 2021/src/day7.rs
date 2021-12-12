@@ -10,18 +10,15 @@ fn run(input: &str, ex: bool) -> usize {
             positions.insert(pos, positions.get(&pos).unwrap_or(&0) + 1);
         });
 
-    let left = *positions.keys().min().unwrap();
+    let _left = *positions.keys().min().unwrap();
     let right = *positions.keys().max().unwrap();
 
     let mut costs = vec![0; right + 1];
 
     for (&pos, &crabs) in positions.iter() {
-        for (i, p) in (left..=pos)
-            .rev()
-            .enumerate()
-            .chain((pos..=right).enumerate())
-        {
-            costs[p] += crabs * if ex { (0..=i).sum::<usize>() } else { i };
+        for (p, cost) in costs.iter_mut().enumerate() {
+            let distance = (pos as isize - p as isize).abs() as usize;
+            *cost += crabs * if ex { (0..=distance).sum() } else { distance };
         }
     }
 
