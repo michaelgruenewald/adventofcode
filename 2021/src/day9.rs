@@ -37,7 +37,7 @@ pub fn part1(input: &str) -> usize {
 
 pub fn part2(input: &str) -> usize {
     let map = parse(input);
-    low_points(&map)
+    let mut sizes = low_points(&map)
         .iter()
         .map(|&pos| {
             let mut positions = HashSet::from([pos]);
@@ -56,10 +56,9 @@ pub fn part2(input: &str) -> usize {
             }
             positions.len()
         })
-        .collect::<BinaryHeap<_>>()
-        .iter()
-        .take(3)
-        .product()
+        .collect::<BinaryHeap<_>>();
+
+    sizes.pop().unwrap() * sizes.pop().unwrap() * sizes.pop().unwrap()
 }
 
 #[cfg(test)]
