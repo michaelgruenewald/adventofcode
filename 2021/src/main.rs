@@ -8,6 +8,8 @@ mod day11;
 mod day12;
 #[cfg(feature = "day13")]
 mod day13;
+#[cfg(feature = "day14")]
+mod day14;
 #[cfg(feature = "day2")]
 mod day2;
 #[cfg(feature = "day3")]
@@ -90,5 +92,10 @@ fn main() {
     {
         let input13 = include_str!("input13.txt");
         println!("{}\n{}", day13::part1(input13), day13::part2(input13));
+    }
+    #[cfg(feature = "day14")]
+    {
+        let input14 = include_str!("input14.txt");
+        println!("{}\n{}", day14::part1(input14), day14::part2(input14));
     }
 }
