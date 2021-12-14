@@ -1,14 +1,12 @@
 use std::collections::HashMap;
 
 fn run(input: &str, ex: bool) -> usize {
-    let mut positions = HashMap::new();
+    let mut positions = HashMap::<_, usize>::new();
     input
         .trim()
         .split(',')
         .map(|s| s.parse::<usize>().unwrap())
-        .for_each(|pos| {
-            positions.insert(pos, positions.get(&pos).unwrap_or(&0) + 1);
-        });
+        .for_each(|pos| *positions.entry(pos).or_default() += 1);
 
     let _left = *positions.keys().min().unwrap();
     let right = *positions.keys().max().unwrap();

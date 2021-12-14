@@ -39,7 +39,7 @@ fn run(lines: &[Line], with_diagonals: bool) -> usize {
         if with_diagonals || xdist == 0 || ydist == 0 {
             for d in 0..=max(xdist, ydist) {
                 let pos = (line.x1 + d * xdir, line.y1 + d * ydir);
-                pixels.insert(pos, pixels.get(&pos).unwrap_or(&0) + 1);
+                *pixels.entry(pos).or_default() += 1;
             }
         }
     }
