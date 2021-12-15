@@ -82,16 +82,17 @@ pub fn part2(input: &str) -> String {
 
     (0..=final_dots.iter().map(|&(_x, y)| y).max().unwrap())
         .map(|y| {
-            (0..=final_dots.iter().map(|&(x, _y)| x).max().unwrap())
-                .map(|x| {
-                    if final_dots.contains(&(x, y)) {
-                        '█'
-                    } else {
-                        '░'
-                    }
-                })
-                .collect::<String>()
-                + "\n"
+            "\n".to_owned()
+                + (0..=final_dots.iter().map(|&(x, _y)| x).max().unwrap())
+                    .map(|x| {
+                        if final_dots.contains(&(x, y)) {
+                            '█'
+                        } else {
+                            '░'
+                        }
+                    })
+                    .collect::<String>()
+                    .as_str()
         })
         .collect::<String>()
 }
@@ -128,13 +129,12 @@ fn test_part1() {
 #[test]
 fn test_part2() {
     assert_eq!(
-        "\
+        "
 █████
 █░░░█
 █░░░█
 █░░░█
-█████
-",
+█████",
         part2(EXAMPLE)
     );
 }
