@@ -53,6 +53,11 @@ pub fn part2(input: &str) -> usize {
     oxygen * co2
 }
 
+fn main() {
+    let input = include_str!("input3.txt");
+    println!("{} {}", part1(input), part2(input));
+}
+
 #[cfg(test)]
 const EXAMPLE: &str = "00100
 11110

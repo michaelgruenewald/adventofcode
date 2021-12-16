@@ -96,6 +96,11 @@ pub fn part2(input: &str) -> usize {
     run(input, Which::Last)
 }
 
+fn main() {
+    let input = include_str!("input4.txt");
+    println!("{} {}", part1(input), part2(input));
+}
+
 #[cfg(test)]
 const EXAMPLE: &str = "7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
 

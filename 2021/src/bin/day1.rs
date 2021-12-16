@@ -28,6 +28,11 @@ pub fn part2(input: &str) -> usize {
         .count()
 }
 
+fn main() {
+    let input = include_str!("input1.txt");
+    println!("{} {}", part1(input), part2(input));
+}
+
 #[cfg(test)]
 const EXAMPLE: &str = "199
 200

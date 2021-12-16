@@ -51,9 +51,14 @@ pub fn part2(input: &str) -> usize {
     run(input, true)
 }
 
+fn main() {
+    let input = include_str!("input12.txt");
+    println!("{} {}", part1(input), part2(input));
+}
+
 #[cfg(test)]
 mod test {
-    use crate::day12::*;
+    use crate::{part1, part2};
 
     const EXAMPLE1: &str = "start-A\nstart-b\nA-c\nA-b\nb-d\nA-end\nb-end";
     const EXAMPLE2: &str =

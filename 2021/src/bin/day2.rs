@@ -112,6 +112,11 @@ impl From<State2> for usize {
     }
 }
 
+fn main() {
+    let input = include_str!("input2.txt");
+    println!("{} {}", part1(input), part2(input));
+}
+
 #[cfg(test)]
 const EXAMPLE: &str = "forward 5
 down 5

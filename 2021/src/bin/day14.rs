@@ -49,6 +49,11 @@ pub fn part2(input: &str) -> usize {
     run(input, 40)
 }
 
+fn main() {
+    let input = include_str!("input14.txt");
+    println!("{} {}", part1(input), part2(input));
+}
+
 #[cfg(test)]
 const EXAMPLE: &str = "NNCB
 

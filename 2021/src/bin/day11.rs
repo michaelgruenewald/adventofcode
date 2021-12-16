@@ -67,6 +67,11 @@ pub fn part2(input: &str) -> usize {
     (1..).find(|_| step(&mut map) == map.len()).unwrap()
 }
 
+fn main() {
+    let input = include_str!("input11.txt");
+    println!("{} {}", part1(input), part2(input));
+}
+
 #[cfg(test)]
 const EXAMPLE: &str = "5483143223
 2745854711

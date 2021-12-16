@@ -62,6 +62,11 @@ pub fn part2(input: &str) -> usize {
     scores[scores.len() / 2]
 }
 
+fn main() {
+    let input = include_str!("input10.txt");
+    println!("{} {}", part1(input), part2(input));
+}
+
 #[cfg(test)]
 const EXAMPLE: &str = "[({(<(())[]>[[{[]{<()<>>
 [(()[<>])]({[<{<<[]>>(

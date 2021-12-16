@@ -97,6 +97,11 @@ pub fn part2(input: &str) -> String {
         .collect::<String>()
 }
 
+fn main() {
+    let input = include_str!("input13.txt");
+    println!("{} {}", part1(input), part2(input));
+}
+
 #[cfg(test)]
 const EXAMPLE: &str = "6,10
 0,14

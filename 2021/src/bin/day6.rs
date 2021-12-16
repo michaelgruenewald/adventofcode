@@ -21,6 +21,11 @@ pub fn part2(input: &str) -> usize {
     run(input, 256)
 }
 
+fn main() {
+    let input = include_str!("input6.txt");
+    println!("{} {}", part1(input), part2(input));
+}
+
 #[cfg(test)]
 const EXAMPLE: &str = "3,4,3,1,2";
 

@@ -58,6 +58,11 @@ pub fn part2(input: &str) -> isize {
     run(input, 5)
 }
 
+fn main() {
+    let input = include_str!("input15.txt");
+    println!("{} {}", part1(input), part2(input));
+}
+
 #[cfg(test)]
 const EXAMPLE: &str = "1163751742
 1381373672

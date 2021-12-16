@@ -84,6 +84,11 @@ pub fn part2(input: &str) -> u64 {
     read(&mut bitstream(input)).evaluate()
 }
 
+fn main() {
+    let input = include_str!("input16.txt");
+    println!("{} {}", part1(input), part2(input));
+}
+
 #[test]
 fn test_part1() {
     assert_eq!(16, part1("8A004A801A8002F478"));

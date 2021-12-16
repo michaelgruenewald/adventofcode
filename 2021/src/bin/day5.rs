@@ -56,6 +56,11 @@ pub fn part2(input: &str) -> usize {
     run(&lines, true)
 }
 
+fn main() {
+    let input = include_str!("input5.txt");
+    println!("{} {}", part1(input), part2(input));
+}
+
 #[cfg(test)]
 const EXAMPLE: &str = "0,9 -> 5,9
 8,0 -> 0,8

@@ -88,6 +88,11 @@ pub fn part2(input: &str) -> usize {
         .sum()
 }
 
+fn main() {
+    let input = include_str!("input8.txt");
+    println!("{} {}", part1(input), part2(input));
+}
+
 #[cfg(test)]
 const EXAMPLE: &str = "\
 be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe
