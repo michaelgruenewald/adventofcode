@@ -1,4 +1,4 @@
-use std::cmp::Ordering;
+use std::iter;
 
 #[derive(Debug)]
 enum Packet {
@@ -25,75 +25,54 @@ impl Packet {
             Operator(_, 1, packets) => packets.iter().map(|p| p.evaluate()).product(),
             Operator(_, 2, packets) => packets.iter().map(|p| p.evaluate()).min().unwrap(),
             Operator(_, 3, packets) => packets.iter().map(|p| p.evaluate()).max().unwrap(),
-            Operator(_, op @ (5 | 6 | 7), packets) => {
-                let r = packets[0].evaluate().cmp(&packets[1].evaluate());
-                if *op == 5 && r == Ordering::Greater
-                    || *op == 6 && r == Ordering::Less
-                    || *op == 7 && r == Ordering::Equal
-                {
-                    1
-                } else {
-                    0
-                }
-            }
-            Operator(_, _, _) => unimplemented!(),
+            Operator(_, 5, packets) => (packets[0].evaluate() > packets[1].evaluate()).into(),
+            Operator(_, 6, packets) => (packets[0].evaluate() < packets[1].evaluate()).into(),
+            Operator(_, 7, packets) => (packets[0].evaluate() == packets[1].evaluate()).into(),
+            Operator(_, _, _) => unreachable!(),
         }
     }
 }
 
-fn nextn(it: &mut dyn Iterator<Item = u8>, n: usize) -> u64 {
+fn nextn(it: &mut dyn Iterator<Item = bool>, n: usize) -> u64 {
     (0..n)
         .map(|_| it.next().unwrap())
         .fold(0, |a, e| a * 2 + e as u64)
 }
 
-fn read(it: &mut dyn Iterator<Item = u8>) -> Packet {
+fn read(it: &mut dyn Iterator<Item = bool>) -> Packet {
     let version = nextn(it, 3);
     match nextn(it, 3) {
         4 => {
-            let mut v = 0;
-            loop {
-                let more = nextn(it, 1);
-                let num = nextn(it, 4);
-                v = v * 16 + num;
+            let mut value = 0;
+            let mut more = true;
 
-                if more == 0 {
-                    break;
-                }
+            while more {
+                more = it.next().unwrap();
+                value = value * 16 + nextn(it, 4);
             }
-            Literal(version, v)
+
+            Literal(version, value)
         }
         packet_type => {
-            let length_type = nextn(it, 1);
-            match length_type {
-                0 => {
-                    let total_length = nextn(it, 15);
-                    let mut sub = it.take(total_length as usize).peekable();
-                    let mut packets = vec![];
-                    while sub.peek().is_some() {
-                        packets.push(read(&mut sub));
-                    }
-                    Operator(version, packet_type, packets)
-                }
-                1 => {
-                    let sub_packet_count = nextn(it, 11);
-                    Operator(
-                        version,
-                        packet_type,
-                        (0..sub_packet_count).map(|_| read(it)).collect(),
-                    )
-                }
-                _ => unreachable!(),
-            }
+            let packets = if it.next().unwrap() {
+                let sub_packet_count = nextn(it, 11);
+                (0..sub_packet_count).map(|_| read(it)).collect()
+            } else {
+                let total_length = nextn(it, 15);
+                let mut sub_it = it.take(total_length as usize).peekable();
+                iter::from_fn(move || sub_it.peek().is_some().then(|| read(&mut sub_it))).collect()
+            };
+
+            Operator(version, packet_type, packets)
         }
     }
 }
 
-fn bitstream(input: &str) -> impl Iterator<Item = u8> + '_ {
+fn bitstream(input: &str) -> impl Iterator<Item = bool> + '_ {
     input.chars().flat_map(|c| {
         (0..=3)
             .rev()
-            .map(move |b| (c.to_digit(16).unwrap() & (1 << b)).clamp(0, 1) as u8)
+            .map(move |b| (c.to_digit(16).unwrap() & (1 << b)) > 0)
     })
 }
 
