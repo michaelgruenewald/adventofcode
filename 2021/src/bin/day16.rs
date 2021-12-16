@@ -33,34 +33,47 @@ impl Packet {
     }
 }
 
-fn nextn(it: &mut dyn Iterator<Item = bool>, n: usize) -> u64 {
-    (0..n)
-        .map(|_| it.next().unwrap())
-        .fold(0, |a, e| a * 2 + e as u64)
+trait BitsToInt {
+    fn bits_to_int(&mut self) -> u64;
 }
 
-fn read(it: &mut dyn Iterator<Item = bool>) -> Packet {
-    let version = nextn(it, 3);
-    match nextn(it, 3) {
+impl<I> BitsToInt for I
+where
+    I: Iterator<Item = bool>,
+{
+    fn bits_to_int(&mut self) -> u64 {
+        self.fold(0, |a, e| a * 2 + e as u64)
+    }
+}
+
+fn read(bits: &mut dyn Iterator<Item = bool>) -> Packet {
+    let version = bits.take(3).bits_to_int();
+    match bits.take(3).bits_to_int() {
         4 => {
             let mut value = 0;
             let mut more = true;
 
             while more {
-                more = it.next().unwrap();
-                value = value * 16 + nextn(it, 4);
+                more = bits.next().unwrap();
+                value = value * 16 + bits.take(4).bits_to_int();
             }
 
             Literal(version, value)
         }
         packet_type => {
-            let packets = if it.next().unwrap() {
-                let sub_packet_count = nextn(it, 11);
-                (0..sub_packet_count).map(|_| read(it)).collect()
+            let packets = if bits.next().unwrap() {
+                let count = bits.take(11).bits_to_int();
+                (0..count).map(|_| read(bits)).collect()
             } else {
-                let total_length = nextn(it, 15);
-                let mut sub_it = it.take(total_length as usize).peekable();
-                iter::from_fn(move || sub_it.peek().is_some().then(|| read(&mut sub_it))).collect()
+                let length = bits.take(15).bits_to_int();
+                let mut contained_bits = bits.take(length as usize).peekable();
+                iter::from_fn(move || {
+                    contained_bits
+                        .peek()
+                        .is_some()
+                        .then(|| read(&mut contained_bits))
+                })
+                .collect()
             };
 
             Operator(version, packet_type, packets)
