@@ -43,7 +43,7 @@ fn run(lines: &[Line], with_diagonals: bool) -> usize {
             }
         }
     }
-    pixels.values().filter(|v| **v >= 2).count()
+    pixels.values().filter(|&&v| v >= 2).count()
 }
 
 pub fn part1(input: &str) -> usize {

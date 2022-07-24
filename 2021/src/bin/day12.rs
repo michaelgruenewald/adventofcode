@@ -2,18 +2,12 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 
 fn run(input: &str, allow_one_small_twice: bool) -> usize {
-    let mut graph = HashMap::new();
+    let mut graph = HashMap::<_, HashSet<_>>::new();
     for line in input.split_terminator('\n') {
         let (from, to) = line.split_once('-').unwrap();
 
-        if !graph.contains_key(from) {
-            graph.insert(from, HashSet::new());
-        }
-        graph.get_mut(from).unwrap().insert(to);
-        if !graph.contains_key(to) {
-            graph.insert(to, HashSet::new());
-        }
-        graph.get_mut(to).unwrap().insert(from);
+        graph.entry(from).or_default().insert(to);
+        graph.entry(to).or_default().insert(from);
     }
 
     let mut paths = vec![(vec!["start"], false)];

@@ -94,7 +94,7 @@ pub fn part2(input: &str) -> String {
                     .collect::<String>()
                     .as_str()
         })
-        .collect::<String>()
+        .collect()
 }
 
 fn main() {

@@ -15,7 +15,7 @@ fn run(input: &str, ex: bool) -> usize {
 
     for (&pos, &crabs) in positions.iter() {
         for (p, cost) in costs.iter_mut().enumerate() {
-            let distance = (pos as isize - p as isize).abs() as usize;
+            let distance = pos.abs_diff(p);
             *cost += crabs * if ex { (0..=distance).sum() } else { distance };
         }
     }

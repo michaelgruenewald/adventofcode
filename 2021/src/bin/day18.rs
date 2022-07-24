@@ -103,9 +103,9 @@ fn parse<T: Iterator<Item = char>>(chars: &mut Peekable<T>) -> Node {
 
             Pair(left.into(), right.into())
         }
-        Some(c) if c.is_digit(10) => {
+        Some(c) if c.is_ascii_digit() => {
             let mut v = 0;
-            while let Some(c) = chars.next_if(|c| c.is_digit(10)) {
+            while let Some(c) = chars.next_if(|c| c.is_ascii_digit()) {
                 v = v * 10 + c.to_digit(10).unwrap();
             }
 
