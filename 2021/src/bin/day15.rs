@@ -3,9 +3,9 @@ use std::collections::HashMap;
 fn parse(input: &str) -> HashMap<(isize, isize), isize> {
     let mut map = HashMap::new();
 
-    for (y, line) in input.split_terminator('\n').enumerate() {
-        for (x, ch) in line.trim().chars().enumerate() {
-            map.insert((x as isize, y as isize), ch.to_digit(10).unwrap() as isize);
+    for (line, y) in input.split_terminator('\n').zip(0..) {
+        for (ch, x) in line.trim().chars().zip(0..) {
+            map.insert((x, y), ch.to_digit(10).unwrap() as _);
         }
     }
 

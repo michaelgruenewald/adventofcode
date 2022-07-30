@@ -32,11 +32,11 @@ fn parse(input: &str) -> (Vec<Pixel>, HashMap<(isize, isize), Pixel>) {
         .collect();
 
     let mut image = HashMap::new();
-    for (row, line) in image_input.split_terminator('\n').enumerate() {
-        for (col, c) in line.chars().enumerate() {
+    for (line, row) in image_input.split_terminator('\n').zip(0..) {
+        for (c, col) in line.chars().zip(0..) {
             match c {
-                '#' => image.insert((row as _, col as _), Light),
-                '.' => image.insert((row as _, col as _), Dark),
+                '#' => image.insert((row, col), Light),
+                '.' => image.insert((row, col), Dark),
                 _ => panic!(),
             };
         }

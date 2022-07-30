@@ -9,15 +9,15 @@ enum Place {
 fn parse(input: &str) -> HashMap<(isize, isize), Place> {
     let mut map = HashMap::new();
 
-    for (row, line) in input.split_terminator('\n').enumerate() {
-        for (col, c) in line.chars().enumerate() {
+    for (line, row) in input.split_terminator('\n').zip(0..) {
+        for (c, col) in line.chars().zip(0..) {
             match c {
                 '.' => {}
                 '>' => {
-                    map.insert((row as _, col as _), Place::East);
+                    map.insert((row, col), Place::East);
                 }
                 'v' => {
-                    map.insert((row as _, col as _), Place::South);
+                    map.insert((row, col), Place::South);
                 }
                 _ => panic!(),
             }

@@ -7,12 +7,9 @@ const ADJ: [(isize, isize); 4] = [(0, -1), (0, 1), (-1, 0), (1, 0)];
 fn parse(input: &str) -> HashMap<(isize, isize), usize> {
     let mut map = HashMap::new();
 
-    for (row, line) in input.split_terminator('\n').enumerate() {
-        for (col, ch) in line.trim().chars().enumerate() {
-            map.insert(
-                (row as isize, col as isize),
-                ch.to_digit(10).unwrap() as usize,
-            );
+    for (line, row) in input.split_terminator('\n').zip(0..) {
+        for (ch, col) in line.trim().chars().zip(0..) {
+            map.insert((row, col), ch.to_digit(10).unwrap() as _);
         }
     }
 
