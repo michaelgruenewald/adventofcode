@@ -1,6 +1,6 @@
 module Main (main) where
 
-import Data.List ( sort )
+import Data.List (sort)
 
 main :: IO ()
 main = do
@@ -9,16 +9,13 @@ main = do
   print $ part2 contents
 
 part1 :: String -> Int
-part1 contents = do
-  let elves = partitionBy ("" ==) (lines contents)
-  let caloriesByElf = map (sum . map read) elves
-  maximum caloriesByElf
+part1 = maximum . map sum . parse
 
 part2 :: String -> Int
-part2 contents = do
-  let elves = partitionBy ("" ==) (lines contents)
-  let caloriesByElf = map (sum . map read) elves
-  sum $ take 3 $ reverse $ sort caloriesByElf
+part2 = sum . take 3 . reverse . sort . map sum . parse
+
+parse :: String -> [[Int]]
+parse s = map (map read) $ partitionBy null $ lines s
 
 partitionBy :: (a -> Bool) -> [a] -> [[a]]
 partitionBy _ [] = []
