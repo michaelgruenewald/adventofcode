@@ -39,29 +39,15 @@ requiredResponse Scissors Win = Rock
 requiredResponse x Draw = x
 
 part1 :: String -> Int
-part1 s = do
-  let parsed = map (bimap (convertFirst . read) (convertSecond . read) . break (== ' ')) $ lines s
-        where
-          convertFirst x = case x of
-            A -> Rock
-            B -> Paper
-            C -> Scissors
-          convertSecond x = case x of
-            X -> Rock
-            Y -> Paper
-            Z -> Scissors
-  sum $ map (\(opponent, response) -> shapeScore response + outcomeScore (outcome opponent response)) parsed
+part1 =
+  let convertFirst x = case read x of A -> Rock; B -> Paper; C -> Scissors
+      convertSecond x = case read x of X -> Rock; Y -> Paper; Z -> Scissors
+      score (opponent, response) = shapeScore response + outcomeScore (outcome opponent response)
+   in sum . map (score . bimap convertFirst convertSecond . break (== ' ')) . lines
 
 part2 :: String -> Int
-part2 s = do
-  let parsed = map (bimap (convertFirst . read) (convertSecond . read) . break (== ' ')) $ lines s
-        where
-          convertFirst x = case x of
-            A -> Rock
-            B -> Paper
-            C -> Scissors
-          convertSecond x = case x of
-            X -> Lose
-            Y -> Draw
-            Z -> Win
-  sum $ map (\(opponent, desiredOutcome) -> shapeScore (requiredResponse opponent desiredOutcome) + outcomeScore desiredOutcome) parsed
+part2 =
+  let convertFirst x = case read x of A -> Rock; B -> Paper; C -> Scissors
+      convertSecond x = case read x of X -> Lose; Y -> Draw; Z -> Win
+      score (opponent, desiredOutcome) = shapeScore (requiredResponse opponent desiredOutcome) + outcomeScore desiredOutcome
+   in sum . map (score . bimap convertFirst convertSecond . break (== ' ')) . lines
