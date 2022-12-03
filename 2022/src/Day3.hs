@@ -10,12 +10,19 @@ priority c
   | isAsciiLower c = ord c - ord 'a' + 1
   | otherwise = error "invalid item type"
 
-groupOf :: Int -> [a] -> [[a]]
-groupOf _ [] = []
-groupOf n a = let (l, r) = splitAt n a in l : groupOf n r
+chunks :: Int -> [a] -> [[a]]
+chunks _ [] = []
+chunks n list = l : chunks n r where (l, r) = splitAt n list
+
+halves :: [a] -> ([a], [a])
+halves list = splitAt (div (length list) 2) list
+
+only :: [a] -> a
+only [x] = x
+only _ = error "not one element"
 
 part1 :: String -> Int
-part1 = sum . map (priority . head . uncurry intersect . bimap nub nub . (\line -> splitAt (div (length line) 2) line)) . lines
+part1 = sum . map (priority . only . uncurry intersect . bimap nub nub . halves) . lines
 
 part2 :: String -> Int
-part2 = sum . map (priority . head . foldl1 intersect . map nub) . groupOf 3 . lines
+part2 = sum . map (priority . only . foldl1 intersect . map nub) . chunks 3 . lines
