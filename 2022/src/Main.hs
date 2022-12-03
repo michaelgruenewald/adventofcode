@@ -4,11 +4,13 @@ module Main (main) where
 
 import Day1 qualified
 import Day2 qualified
+import Day3 qualified
 
 main :: IO ()
 main = do
   day1
   day2
+  day3
 
 day1 :: IO ()
 day1 = do
@@ -21,3 +23,9 @@ day2 = do
   contents <- readFile "input2.txt"
   print $ Day2.part1 contents
   print $ Day2.part2 contents
+
+day3 :: IO ()
+day3 = do
+  contents <- readFile "input3.txt"
+  print $ Day3.part1 contents
+  print $ Day3.part2 contents
