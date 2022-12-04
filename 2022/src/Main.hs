@@ -16,24 +16,24 @@ main = do
 
 day1 :: IO ()
 day1 = do
-  contents <- readFile "input1.txt"
+  contents <- readFile "src/input1.txt"
   print $ Day1.part1 contents
   print $ Day1.part2 contents
 
 day2 :: IO ()
 day2 = do
-  contents <- readFile "input2.txt"
+  contents <- readFile "src/input2.txt"
   print $ Day2.part1 contents
   print $ Day2.part2 contents
 
 day3 :: IO ()
 day3 = do
-  contents <- readFile "input3.txt"
+  contents <- readFile "src/input3.txt"
   print $ Day3.part1 contents
   print $ Day3.part2 contents
 
 day4 :: IO ()
 day4 = do
-  contents <- readFile "input4.txt"
+  contents <- readFile "src/input4.txt"
   print $ Day4.part1 contents
   print $ Day4.part2 contents
