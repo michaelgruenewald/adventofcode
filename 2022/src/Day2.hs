@@ -1,4 +1,4 @@
-module Day2 (part1, part2) where
+module Day2 (main) where
 
 import Data.Bifunctor
 
@@ -51,3 +51,9 @@ part2 =
       convertSecond x = case read x of X -> Lose; Y -> Draw; Z -> Win
       score (opponent, desiredOutcome) = shapeScore (requiredResponse opponent desiredOutcome) + outcomeScore desiredOutcome
    in sum . map (score . bimap convertFirst convertSecond . break (== ' ')) . lines
+
+main :: IO ()
+main = do
+  contents <- readFile "src/input2.txt"
+  print $ part1 contents
+  print $ part2 contents

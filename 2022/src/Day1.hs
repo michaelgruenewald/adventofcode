@@ -1,4 +1,4 @@
-module Day1 (part1, part2) where
+module Day1 (main) where
 
 import Data.List (sort)
 
@@ -7,6 +7,12 @@ part1 = maximum . map sum . parse
 
 part2 :: String -> Int
 part2 = sum . take 3 . reverse . sort . map sum . parse
+
+main :: IO ()
+main = do
+  contents <- readFile "src/input1.txt"
+  print $ part1 contents
+  print $ part2 contents
 
 parse :: String -> [[Int]]
 parse = map (map read) . splitBy null . lines

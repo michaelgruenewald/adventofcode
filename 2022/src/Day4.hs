@@ -1,4 +1,4 @@
-module Day4 (part1, part2) where
+module Day4 (main) where
 
 import Data.List (intersect, union)
 
@@ -15,3 +15,9 @@ part1 = length . filter (\(a, b) -> length (a `union` b) == max (length a) (leng
 
 part2 :: String -> Int
 part2 = length . filter (\(a, b) -> not (null (a `intersect` b))) . parse
+
+main :: IO ()
+main = do
+  contents <- readFile "src/input4.txt"
+  print $ part1 contents
+  print $ part2 contents
