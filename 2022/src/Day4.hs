@@ -1,6 +1,6 @@
 module Day4 (main) where
 
-import Data.List (intersect, union)
+import Data.List (intersect, isSubsequenceOf)
 
 parseRange :: [Char] -> [Int]
 parseRange t = enumFromTo (read l) (read (tail r)) where (l, r) = break (== '-') t
@@ -11,10 +11,10 @@ parse =
    in map parseline . lines
 
 part1 :: String -> Int
-part1 = length . filter (\(a, b) -> length (a `union` b) == max (length a) (length b)) . parse
+part1 = length . filter (\(a, b) -> isSubsequenceOf a b || isSubsequenceOf b a) . parse
 
 part2 :: String -> Int
-part2 = length . filter (\(a, b) -> not (null (a `intersect` b))) . parse
+part2 = length . filter (not . null . uncurry intersect) . parse
 
 main :: IO ()
 main = do
