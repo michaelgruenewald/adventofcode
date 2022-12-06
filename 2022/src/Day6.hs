@@ -4,7 +4,7 @@ import Data.List (nub)
 
 firstUnique :: Int -> String -> Int
 firstUnique n s
-  | length (nub (take n s)) == n = n
+  | take n s == nub (take n s) = n
   | otherwise = firstUnique n (tail s) + 1
 
 part1 :: String -> Int
