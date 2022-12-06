@@ -3,8 +3,10 @@ source-dirs: src
 dependencies:
 - base >= 4.7 && < 5
 - containers
+- extra
 executables:
   day1: { main: Day1, other-modules: [] }
   day2: { main: Day2, other-modules: [] }
   day3: { main: Day3, other-modules: [] }
   day4: { main: Day4, other-modules: [] }
+  day5: { main: Day5, other-modules: [] }

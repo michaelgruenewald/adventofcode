@@ -16,6 +16,7 @@ executable day1
   build-depends:
       base >=4.7 && <5
     , containers
+    , extra
   default-language: Haskell2010
 
 executable day2
@@ -26,6 +27,7 @@ executable day2
   build-depends:
       base >=4.7 && <5
     , containers
+    , extra
   default-language: Haskell2010
 
 executable day3
@@ -36,6 +38,7 @@ executable day3
   build-depends:
       base >=4.7 && <5
     , containers
+    , extra
   default-language: Haskell2010
 
 executable day4
@@ -46,4 +49,16 @@ executable day4
   build-depends:
       base >=4.7 && <5
     , containers
+    , extra
+  default-language: Haskell2010
+
+executable day5
+  main-is: Day5.hs
+  hs-source-dirs:
+      src
+  ghc-options: -main-is Day5
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , extra
   default-language: Haskell2010
