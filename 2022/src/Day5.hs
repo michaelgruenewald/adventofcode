@@ -3,7 +3,7 @@ module Day5 (main) where
 import Data.Bifunctor (bimap, second)
 import Data.Char (digitToInt, isAlpha, isDigit)
 import Data.List (transpose)
-import Data.List.Extra (breakOn, splitOn)
+import Data.List.Extra (breakOn)
 import Data.Map (Map, adjust, elems, fromList, (!))
 
 breakOn' :: Eq a => [a] -> [a] -> ([a], [a])
@@ -28,7 +28,7 @@ part2 = map head . elems . uncurry (foldl apply) . parse
 parse :: String -> (Map Int String, [(Int, Int, Int)])
 parse =
   let parseStart = fromList . map (\(x : xs) -> (digitToInt x, reverse . filter isAlpha $ xs)) . filter (isDigit . head) . transpose . reverse . lines
-      parseProcedure = map ((\["move", amount, "from", from, "to", to] -> (read amount, read from, read to)) . splitOn " ") . lines
+      parseProcedure = map ((\["move", amount, "from", from, "to", to] -> (read amount, read from, read to)) . words) . lines
    in bimap parseStart parseProcedure . breakOn' "\n\n"
 
 main :: IO ()
