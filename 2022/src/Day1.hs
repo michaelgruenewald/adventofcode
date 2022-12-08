@@ -1,6 +1,7 @@
 module Day1 (main) where
 
 import Data.List (sort)
+import Data.List.Extra (split)
 
 part1 :: String -> Int
 part1 = maximum . map sum . parse
@@ -15,10 +16,4 @@ main = do
   print $ part2 contents
 
 parse :: String -> [[Int]]
-parse = map (map read) . splitBy null . lines
-
-splitBy :: (a -> Bool) -> [a] -> [[a]]
-splitBy _ [] = []
-splitBy cond l =
-  let (left, right) = break cond l
-   in left : splitBy cond (drop 1 right)
+parse = map (map read) . split null . lines

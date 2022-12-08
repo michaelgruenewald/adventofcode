@@ -2,7 +2,6 @@ module Day7 (main) where
 
 import Data.Char (isDigit)
 import Data.List (foldl', isPrefixOf)
-import Data.List.Extra (dropEnd1)
 import qualified Data.Map as M
 import Data.Maybe (fromMaybe)
 
@@ -13,7 +12,7 @@ parse = dirSizes . foldl' step initial . lines
   where
     initial = ParseState [] M.empty
     step state line = case words line of
-      ["$", "cd", ".."] -> state {cwd = dropEnd1 (cwd state)}
+      ["$", "cd", ".."] -> state {cwd = init (cwd state)}
       ["$", "cd", "/"] -> ensureDir $ state {cwd = []}
       ["$", "cd", name] -> ensureDir $ state {cwd = cwd state ++ [name]}
       ["$", "ls"] -> state
