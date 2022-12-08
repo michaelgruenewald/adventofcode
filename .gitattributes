@@ -1,2 +1,2 @@
-*.cabal linguist-generated
-input*.txt linguist-generated
+*.cabal -diff linguist-generated
+input*.txt -diff linguist-generated
