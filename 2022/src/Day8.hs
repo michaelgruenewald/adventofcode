@@ -1,6 +1,5 @@
 module Day8 (main) where
 
-import Data.Bifunctor (bimap)
 import Data.Char (digitToInt)
 import Data.Map (Map, filterWithKey, fromList, mapWithKey, (!?))
 import Data.Maybe (fromJust, isJust)
@@ -23,7 +22,13 @@ part1 :: String -> Int
 part1 s = length $ filterWithKey (\pos height -> any (all (< height)) (dirs pos m)) m where m = parse s
 
 part2 :: String -> Int
-part2 s = maximum $ mapWithKey (\pos height -> product $ map (uncurry (+) . bimap length (signum . length) . span (< height)) (dirs pos m)) m where m = parse s
+part2 s = maximum $ mapWithKey (\pos height -> product $ map (length . takeUntil (>= height)) (dirs pos m)) m where m = parse s
+
+takeUntil :: (a -> Bool) -> [a] -> [a]
+takeUntil _ [] = []
+takeUntil p (x : xs)
+  | p x = [x]
+  | otherwise = x : takeUntil p xs
 
 main :: IO ()
 main = do
