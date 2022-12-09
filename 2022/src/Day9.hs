@@ -1,8 +1,7 @@
 module Day9 (main) where
 
 import Data.Bifunctor (bimap)
-import Data.Set (Set, insert, singleton)
-import Debug.Trace (traceShowId)
+import Data.List (nub)
 
 type Pos = (Int, Int)
 
@@ -14,13 +13,11 @@ type Pos = (Int, Int)
 
 data Dir = D | U | L | R deriving (Read, Show)
 
-move :: Dir -> Pos -> Pos
-move D = (@+ (0, -1))
-move U = (@+ (0, 1))
-move L = (@+ (-1, 0))
-move R = (@+ (1, 0))
-
-data State = State {knotsAt :: [Pos], seen :: Set Pos} deriving (Show)
+move :: Pos -> Dir -> Pos
+move p D = p @+ (0, -1)
+move p U = p @+ (0, 1)
+move p L = p @+ (-1, 0)
+move p R = p @+ (1, 0)
 
 parse :: String -> [(Dir, Int)]
 parse = map (bimap read read . break (== ' ')) . lines
@@ -28,20 +25,21 @@ parse = map (bimap read read . break (== ' ')) . lines
 unroll :: [(Dir, Int)] -> [Dir]
 unroll = concatMap (\(dir, cnt) -> replicate cnt dir)
 
+follow :: Pos -> Pos -> Pos
+follow self target = if abs xd == 2 || abs yd == 2 then self @- (signum xd, signum yd) else self where (xd, yd) = self @- target
+
+locations :: Int -> [Dir] -> [Pos]
+locations 0 = scanl move (0, 0)
+locations i = scanl follow (0, 0) . locations (i - 1)
+
 run :: Int -> String -> Int
-run n = length . seen . foldl (\state i -> updateSeen $ updateKnots state i) initial . unroll . parse
-  where
-    initial = State (replicate n (0, 0)) (singleton (0, 0))
-    updateKnots st i = st {knotsAt = scanl moveKnot (move i $ head $ knotsAt st) (tail $ knotsAt st)}
-      where
-        moveKnot follow pos = if abs xd == 2 || abs yd == 2 then pos @- (signum xd, signum yd) else pos where (xd, yd) = pos @- follow
-    updateSeen st = st {seen = insert (last $ knotsAt st) (seen st)}
+run n s = length $ nub $ locations n $ (unroll . parse) s
 
 part1 :: String -> Int
-part1 = run 2
+part1 = run 1
 
 part2 :: String -> Int
-part2 = run 10
+part2 = run 9
 
 main :: IO ()
 main = do
