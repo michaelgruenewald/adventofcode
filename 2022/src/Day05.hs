@@ -1,4 +1,4 @@
-module Day5 (main) where
+module Day05 (main) where
 
 import Data.Bifunctor (bimap, second)
 import Data.Char (digitToInt, isAlpha, isDigit)
@@ -33,6 +33,6 @@ parse =
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input5.txt"
+  contents <- readFile "src/input05.txt"
   print $ part1 contents
   print $ part2 contents

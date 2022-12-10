@@ -5,13 +5,13 @@ dependencies:
 - containers
 - extra
 executables:
-  day1: { main: Day1, other-modules: [] }
-  day2: { main: Day2, other-modules: [] }
-  day3: { main: Day3, other-modules: [] }
-  day4: { main: Day4, other-modules: [] }
-  day5: { main: Day5, other-modules: [] }
-  day6: { main: Day6, other-modules: [] }
-  day7: { main: Day7, other-modules: [] }
-  day8: { main: Day8, other-modules: [] }
-  day9: { main: Day9, other-modules: [] }
+  day01: { main: Day01, other-modules: [] }
+  day02: { main: Day02, other-modules: [] }
+  day03: { main: Day03, other-modules: [] }
+  day04: { main: Day04, other-modules: [] }
+  day05: { main: Day05, other-modules: [] }
+  day06: { main: Day06, other-modules: [] }
+  day07: { main: Day07, other-modules: [] }
+  day08: { main: Day08, other-modules: [] }
+  day09: { main: Day09, other-modules: [] }
   day10: { main: Day10, other-modules: [] }

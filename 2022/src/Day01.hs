@@ -1,4 +1,4 @@
-module Day1 (main) where
+module Day01 (main) where
 
 import Data.List (sort)
 import Data.List.Extra (split)
@@ -11,7 +11,7 @@ part2 = sum . take 3 . reverse . sort . map sum . parse
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input1.txt"
+  contents <- readFile "src/input01.txt"
   print $ part1 contents
   print $ part2 contents
 

@@ -1,4 +1,4 @@
-module Day8 (main) where
+module Day08 (main) where
 
 import Data.Char (digitToInt)
 import Data.Map (Map, filterWithKey, fromList, mapWithKey, (!?))
@@ -32,6 +32,6 @@ takeUntil p (x : xs)
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input8.txt"
+  contents <- readFile "src/input08.txt"
   print $ part1 contents
   print $ part2 contents

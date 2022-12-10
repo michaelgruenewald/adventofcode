@@ -1,4 +1,4 @@
-module Day9 (main) where
+module Day09 (main) where
 
 import Data.Bifunctor (bimap)
 import Data.List (nub)
@@ -43,6 +43,6 @@ part2 = run 9
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input9.txt"
+  contents <- readFile "src/input09.txt"
   print $ part1 contents
   print $ part2 contents

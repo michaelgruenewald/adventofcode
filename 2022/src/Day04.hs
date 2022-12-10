@@ -1,10 +1,10 @@
-module Day4 (main) where
+module Day04 (main) where
 
 import Data.Bifunctor (Bifunctor (bimap))
 import Data.List (intersect, isSubsequenceOf)
 
 parseRange :: [Char] -> [Int]
-parseRange = uncurry enumFromTo . bimap read (read . tail) . break (=='-')
+parseRange = uncurry enumFromTo . bimap read (read . tail) . break (== '-')
 
 parse :: String -> [([Int], [Int])]
 parse = map (bimap parseRange (parseRange . tail) . break (== ',')) . lines
@@ -17,6 +17,6 @@ part2 = length . filter (not . null . uncurry intersect) . parse
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input4.txt"
+  contents <- readFile "src/input04.txt"
   print $ part1 contents
   print $ part2 contents

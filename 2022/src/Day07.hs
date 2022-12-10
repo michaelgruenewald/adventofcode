@@ -1,4 +1,4 @@
-module Day7 (main) where
+module Day07 (main) where
 
 import Data.Char (isDigit)
 import Data.List (foldl', isPrefixOf)
@@ -33,6 +33,6 @@ part2 s = minimum . filter (>= treeSize dirs [] + 30000000 - 70000000) $ map (tr
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input7.txt"
+  contents <- readFile "src/input07.txt"
   print $ part1 contents
   print $ part2 contents

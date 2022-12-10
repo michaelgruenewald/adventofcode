@@ -1,4 +1,4 @@
-module Day2 (main) where
+module Day02 (main) where
 
 import Data.Bifunctor
 
@@ -54,6 +54,6 @@ part2 =
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input2.txt"
+  contents <- readFile "src/input02.txt"
   print $ part1 contents
   print $ part2 contents

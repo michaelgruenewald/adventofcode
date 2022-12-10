@@ -1,4 +1,4 @@
-module Day3 (main) where
+module Day03 (main) where
 
 import Data.Bifunctor (Bifunctor (bimap))
 import Data.Char (isAsciiLower, isAsciiUpper, ord)
@@ -29,6 +29,6 @@ part2 = sum . map (priority . only . foldl1 intersect . map nub) . chunks 3 . li
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input3.txt"
+  contents <- readFile "src/input03.txt"
   print $ part1 contents
   print $ part2 contents

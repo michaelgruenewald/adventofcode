@@ -1,4 +1,4 @@
-module Day6 (main) where
+module Day06 (main) where
 
 import Data.List (nub)
 
@@ -15,6 +15,6 @@ part2 = firstUnique 14
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input6.txt"
+  contents <- readFile "src/input06.txt"
   print $ part1 contents
   print $ part2 contents
