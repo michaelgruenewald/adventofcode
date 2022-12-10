@@ -4,6 +4,7 @@ dependencies:
 - base >= 4.7 && < 5
 - containers
 - extra
+- lens
 executables:
   day01: { main: Day01, other-modules: [] }
   day02: { main: Day02, other-modules: [] }
