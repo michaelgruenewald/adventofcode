@@ -5,6 +5,7 @@ dependencies:
 - containers
 - extra
 - lens
+- parsec
 executables:
   day01: { main: Day01, other-modules: [] }
   day02: { main: Day02, other-modules: [] }
@@ -16,3 +17,4 @@ executables:
   day08: { main: Day08, other-modules: [] }
   day09: { main: Day09, other-modules: [] }
   day10: { main: Day10, other-modules: [] }
+  day11: { main: Day11, other-modules: [] }
