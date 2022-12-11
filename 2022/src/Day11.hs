@@ -25,7 +25,7 @@ data MonkeyBehavior = MonkeyBehavior {_monkeyId :: Int, _initialItems :: [Int], 
 
 makeLenses ''MonkeyBehavior
 
-data MonkeyState = MonkeyState {_items :: [Int], _passed :: Int} deriving (Show)
+data MonkeyState = MonkeyState {_passed :: Int, _items :: [Int]} deriving (Show)
 
 makeLenses ''MonkeyState
 
@@ -70,15 +70,17 @@ parse s = case Parsec.parse parser "input11.txt" s of
 run :: (Int -> Int) -> Int -> String -> Int
 run adjustment rounds s =
   let behaviors = parse s
-      initial = map (\b -> MonkeyState (b ^. initialItems) 0) behaviors
+      initial = map (MonkeyState 0 . (^. initialItems)) behaviors
       ring = product $ nub $ map (^. test) behaviors
-      round ms = foldl turn ms [0 .. length behaviors - 1]
-      turn ms mid = foldl (lookAt mid) ms (ms !! mid ^. items)
-      lookAt mid ms item =
-        let behavior = (^.) (behaviors !! mid)
-            newItem = adjustment $ applyTo (behavior operation) item `mod` ring
-            nextMonkey = if newItem `mod` behavior test == 0 then behavior trueMonkey else behavior falseMonkey
-         in over (element mid) (over items tail . over passed (+ 1)) $ over (element nextMonkey) (over items (++ [newItem])) ms
+      round states = foldl turn states behaviors
+      turn states behavior = foldl (lookAt behavior) states (states !! (behavior ^. monkeyId) ^. items)
+      lookAt behavior states item =
+        let newItem = adjustment $ applyTo (behavior ^. operation) item `mod` ring
+            nextMonkey = behavior ^. if newItem `mod` behavior ^. test == 0 then trueMonkey else falseMonkey
+            countItem = over passed (+ 1)
+            dropItem = over items tail
+            throwItem = over items (++ [newItem])
+         in over (element (behavior ^. monkeyId)) (countItem . dropItem) . over (element nextMonkey) throwItem $ states
    in product $ take 2 $ reverse $ sort $ map (^. passed) $ iterate round initial !! rounds
 
 part1 :: String -> Int
