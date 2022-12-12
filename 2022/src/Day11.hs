@@ -6,7 +6,7 @@ import Control.Lens (element, makeLenses, over, set, (^.))
 import Data.Functor (($>), (<&>))
 import qualified Data.Functor.Identity
 import Data.List (nub, sort)
-import qualified Text.Parsec as Parsec
+import qualified Text.Parsec as P
 
 data Operand = Old | Literal Int deriving (Show)
 
@@ -29,43 +29,24 @@ data MonkeyState = MonkeyState {_passed :: Int, _items :: [Int]} deriving (Show)
 
 makeLenses ''MonkeyState
 
-parser :: Parsec.ParsecT String u Data.Functor.Identity.Identity [MonkeyBehavior]
-parser = do
-  monkeys <-
-    Parsec.many
-      ( do
-          monkey <- Parsec.string "Monkey " >> Parsec.many1 Parsec.digit <&> read
-          Parsec.char ':'
-          Parsec.spaces
-          starts <- Parsec.string "Starting items: " >> Parsec.sepBy1 (Parsec.many1 Parsec.digit <&> read) (Parsec.string "," >> Parsec.spaces)
-          Parsec.spaces
-          op1 <- Parsec.string "Operation: new = " >> Parsec.choice [Parsec.string "old" $> Old, Parsec.many1 Parsec.digit <&> Literal . read]
-          Parsec.spaces
-          op <- Parsec.oneOf "+-*"
-          Parsec.spaces
-          op2 <- Parsec.choice [Parsec.string "old" $> Old, Parsec.many1 Parsec.digit <&> Literal . read]
-          Parsec.spaces
-          Parsec.string "Test: divisible by"
-          Parsec.spaces
-          div <- Parsec.many1 Parsec.digit <&> read
-          Parsec.spaces
-          Parsec.string "If true: throw to monkey"
-          Parsec.spaces
-          trueMonkey <- Parsec.many1 Parsec.digit <&> read
-          Parsec.spaces
-          Parsec.string "If false: throw to monkey"
-          Parsec.spaces
-          falseMonkey <- Parsec.many1 Parsec.digit <&> read
-          Parsec.spaces
-          return (MonkeyBehavior monkey starts (op1, op, op2) div trueMonkey falseMonkey)
-      )
-  Parsec.eof
-  return monkeys
+parser :: P.ParsecT String u Data.Functor.Identity.Identity [MonkeyBehavior]
+parser =
+  P.many
+    ( do
+        monkey <- P.string "Monkey" <* P.spaces >> P.many1 P.digit <* P.char ':' <* P.spaces <&> read
+        starts <- P.string "Starting items: " >> P.sepBy1 (P.many1 P.digit <&> read) (P.string "," >> P.spaces) <* P.spaces
+        op1 <- P.string "Operation: new = " >> P.choice [P.string "old" $> Old, P.many1 P.digit <&> Literal . read] <* P.spaces
+        op <- P.oneOf "+-*" <* P.spaces
+        op2 <- P.choice [P.string "old" $> Old, P.many1 P.digit <&> Literal . read] <* P.spaces
+        div <- P.string "Test: divisible by" <* P.spaces >> P.many1 P.digit <* P.spaces <&> read
+        trueMonkey <- P.string "If true: throw to monkey" >> P.spaces >> P.many1 P.digit <* P.spaces <&> read
+        falseMonkey <- P.string "If false: throw to monkey" >> P.spaces >> P.many1 P.digit <* P.spaces <&> read
+        return (MonkeyBehavior monkey starts (op1, op, op2) div trueMonkey falseMonkey)
+    )
+    <* P.eof
 
 parse :: String -> [MonkeyBehavior]
-parse s = case Parsec.parse parser "input11.txt" s of
-  Left x -> error (show x)
-  Right x -> x
+parse = either (error . show) id . P.parse parser "input11.txt"
 
 run :: (Int -> Int) -> Int -> String -> Int
 run adjustment rounds s =
