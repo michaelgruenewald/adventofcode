@@ -1,15 +1,10 @@
 module Day12 (main) where
 
-import Control.Lens
-import Data.Char (digitToInt)
 import Data.Foldable (find, minimumBy)
-import qualified Data.Foldable as M
 import Data.Function (on)
-import Data.Map (member, (!), (!?))
+import Data.Map ((!), (!?))
 import qualified Data.Map as M
-import Data.Maybe (fromJust, fromMaybe, isJust)
-import Data.Tuple.Extra (snd3)
-import Debug.Trace (traceShow, traceShowId)
+import Data.Maybe (fromJust, isJust)
 
 type Pos = (Int, Int)
 
@@ -23,27 +18,29 @@ parse :: String -> [(Pos, Char)]
 parse s = [((x, y), h) | (hs, x) <- zip (lines s) [0 ..], (h, y) <- zip hs [0 ..]]
 
 fixHeights :: Char -> Char
-fixHeights c = case c of 'S' -> 'a'; 'E' -> 'z'; other -> other
+fixHeights 'S' = 'a'
+fixHeights 'E' = 'z'
+fixHeights x = x
 
 run :: (Char -> Bool) -> String -> Int
 run t s =
   let parsed = parse s
       plan = M.map fixHeights $ M.fromList parsed
-      start = fst . fromJust $ find (\(_, h) -> h == 'E') parsed
-      destinations = map fst $ filter (\(_, h) -> t h) parsed
+      start = fst . fromJust $ find ((==) 'E' . snd) parsed
+      destinations = map fst $ filter (t . snd) parsed
       initial = (M.fromList $ map (\pos -> (pos, if pos == start then Just 0 else Nothing)) (M.keys plan))
       step state =
         let (next, Just cost) = minimumBy (compare `on` snd) $ M.assocs $ M.filter isJust state
             reachable = filter (\adj -> maybe False (>= pred (plan ! next)) (plan !? adj)) (adjacent next)
-         in M.delete next $ foldl (flip (M.adjust (Just . maybe (cost + 1) (min (cost + 1))))) state reachable
-      done state = any (\d -> isJust (state ! d)) destinations
+         in M.delete next $ foldl (flip $ M.adjust (Just . maybe (cost + 1) (min (cost + 1)))) state reachable
+      done state = any (isJust . (state !)) destinations
    in fromJust $ head $ M.elems $ M.filterWithKey (\k v -> k `elem` destinations && isJust v) $ until done step initial
 
 part1 :: String -> Int
 part1 = run (== 'S')
 
 part2 :: String -> Int
-part2 = run (\c -> c == 'S' || c == 'a')
+part2 = run (`elem` ['S', 'a'])
 
 main :: IO ()
 main = do
