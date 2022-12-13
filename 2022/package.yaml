@@ -19,3 +19,4 @@ executables:
   day10: { main: Day10, other-modules: [] }
   day11: { main: Day11, other-modules: [] }
   day12: { main: Day12, other-modules: [] }
+  day13: { main: Day13, other-modules: [] }
