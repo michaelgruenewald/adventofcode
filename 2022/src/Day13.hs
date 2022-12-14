@@ -1,8 +1,10 @@
 module Day13 (main) where
 
+import Control.Monad (liftM2)
 import Data.Functor ((<&>))
 import qualified Data.Functor.Identity
 import Data.List (elemIndices, findIndices, sort)
+import Text.Parsec ((<|>))
 import qualified Text.Parsec as P
 
 data Packet = N Int | L [Packet] deriving (Eq, Show)
@@ -20,20 +22,11 @@ instance Ord Packet where
 
 packetParser :: P.ParsecT String u Data.Functor.Identity.Identity Packet
 packetParser =
-  P.choice
-    [ P.many1 P.digit <&> (N . read),
-      P.char '[' >> P.sepBy packetParser (P.string ",") <* P.char ']' <&> L
-    ]
+  (P.char '[' >> P.sepBy packetParser (P.char ',') <* P.char ']' <&> L)
+    <|> (P.many1 P.digit <&> (N . read))
 
 fileParser :: P.ParsecT String u Data.Functor.Identity.Identity [(Packet, Packet)]
-fileParser =
-  P.sepBy1
-    ( do
-        p1 <- packetParser <* P.endOfLine
-        p2 <- packetParser <* P.endOfLine
-        return (p1, p2)
-    )
-    P.endOfLine
+fileParser = P.sepBy1 (liftM2 (,) (packetParser <* P.endOfLine) (packetParser <* P.endOfLine)) P.endOfLine
 
 parse :: String -> [(Packet, Packet)]
 parse = either (error . show) id . P.parse fileParser "input13.txt"
