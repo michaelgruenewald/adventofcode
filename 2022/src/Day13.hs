@@ -2,7 +2,6 @@ module Day13 (main) where
 
 import Control.Monad (liftM2)
 import Data.Functor ((<&>))
-import qualified Data.Functor.Identity
 import Data.List (elemIndices, findIndices, sort)
 import Text.Parsec ((<|>))
 import qualified Text.Parsec as P
@@ -20,12 +19,12 @@ instance Ord Packet where
     | left == right = compare (L ls) (L rs)
     | otherwise = compare left right
 
-packetParser :: P.ParsecT String u Data.Functor.Identity.Identity Packet
+packetParser :: Monad i => P.ParsecT String u i Packet
 packetParser =
   (P.char '[' >> P.sepBy packetParser (P.char ',') <* P.char ']' <&> L)
     <|> (P.many1 P.digit <&> (N . read))
 
-fileParser :: P.ParsecT String u Data.Functor.Identity.Identity [(Packet, Packet)]
+fileParser :: Monad i => P.ParsecT String u i [(Packet, Packet)]
 fileParser = P.sepBy1 (liftM2 (,) (packetParser <* P.endOfLine) (packetParser <* P.endOfLine)) P.endOfLine
 
 parse :: String -> [(Packet, Packet)]

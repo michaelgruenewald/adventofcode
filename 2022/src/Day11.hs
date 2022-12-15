@@ -2,9 +2,8 @@
 
 module Day11 (main) where
 
-import Control.Lens (element, makeLenses, over, set, (^.))
+import Control.Lens (element, makeLenses, over, (^.))
 import Data.Functor (($>), (<&>))
-import qualified Data.Functor.Identity
 import Data.List (nub, sort)
 import qualified Text.Parsec as P
 
@@ -29,7 +28,7 @@ data MonkeyState = MonkeyState {_passed :: Int, _items :: [Int]} deriving (Show)
 
 makeLenses ''MonkeyState
 
-parser :: P.ParsecT String u Data.Functor.Identity.Identity [MonkeyBehavior]
+parser :: Monad i => P.ParsecT String u i [MonkeyBehavior]
 parser =
   P.many
     ( do

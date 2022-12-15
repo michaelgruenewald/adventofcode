@@ -4,7 +4,6 @@ module Day14 (main) where
 
 import Control.Monad (liftM2)
 import Data.Functor ((<&>))
-import qualified Data.Functor.Identity
 import Data.List (find)
 import qualified Data.Set as S
 import qualified Text.Parsec as P
@@ -14,10 +13,10 @@ type Pos = (Int, Int)
 (@+) :: Pos -> Pos -> Pos
 (@+) (x1, y1) (x2, y2) = (x1 + x2, y1 + y2)
 
-numParser :: P.ParsecT String u Data.Functor.Identity.Identity Int
+numParser :: Monad i => P.ParsecT String u i Int
 numParser = P.many1 P.digit <&> read
 
-parser :: P.ParsecT String u Data.Functor.Identity.Identity [[Pos]]
+parser :: Monad i => P.ParsecT String u i [[Pos]]
 parser = P.many1 $ P.sepBy1 (liftM2 (,) (numParser <* P.char ',') numParser) (P.string " -> ") <* P.endOfLine
 
 parse :: String -> [[Pos]]
