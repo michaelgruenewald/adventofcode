@@ -202,3 +202,16 @@ executable day15
     , lens
     , parsec
   default-language: Haskell2010
+
+executable day16
+  main-is: Day16.hs
+  hs-source-dirs:
+      src
+  ghc-options: -main-is Day16
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , extra
+    , lens
+    , parsec
+  default-language: Haskell2010
