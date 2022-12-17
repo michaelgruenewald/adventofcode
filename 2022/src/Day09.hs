@@ -2,6 +2,7 @@ module Day09 (main) where
 
 import Data.Bifunctor (bimap)
 import Data.List (nub)
+import Paths_aoc (getDataFileName)
 
 type Pos = (Int, Int)
 
@@ -43,6 +44,6 @@ part2 = run 9
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input09.txt"
+  contents <- getDataFileName "input09.txt" >>= readFile
   print $ part1 contents
   print $ part2 contents

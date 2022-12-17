@@ -7,6 +7,7 @@ import Data.Char (isDigit)
 import Data.List (foldl', isPrefixOf)
 import Data.Map (Map, adjust, alter, empty, filterWithKey, keys)
 import Data.Maybe (fromMaybe)
+import Paths_aoc (getDataFileName)
 
 data ParseState = ParseState {_cwd :: [String], _dirSizes :: Map [String] Int}
 
@@ -41,6 +42,6 @@ part2 s = minimum . filter (>= treeSize dirs [] + 30000000 - 70000000) $ map (tr
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input07.txt"
+  contents <- getDataFileName "input07.txt" >>= readFile
   print $ part1 contents
   print $ part2 contents

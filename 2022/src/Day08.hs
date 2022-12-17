@@ -3,6 +3,7 @@ module Day08 (main) where
 import Data.Char (digitToInt)
 import Data.Map (Map, filterWithKey, fromList, mapWithKey, (!?))
 import Data.Maybe (fromJust, isJust)
+import Paths_aoc (getDataFileName)
 
 parse :: String -> Map (Int, Int) Int
 parse s = fromList [((row, col), digitToInt h) | (hs, row) <- zip (lines s) [0 ..], (h, col) <- zip hs [0 ..]]
@@ -32,6 +33,6 @@ takeUntil p (x : xs)
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input08.txt"
+  contents <- getDataFileName "input08.txt" >>= readFile
   print $ part1 contents
   print $ part2 contents

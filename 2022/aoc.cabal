@@ -7,9 +7,30 @@ cabal-version: 1.12
 name:           aoc
 version:        0.0.0
 build-type:     Simple
+data-files:
+    input01.txt
+    input02.txt
+    input03.txt
+    input04.txt
+    input05.txt
+    input06.txt
+    input07.txt
+    input08.txt
+    input09.txt
+    input10.txt
+    input11.txt
+    input12.txt
+    input13.txt
+    input14.txt
+    input15.txt
+    input16.txt
+    input17.txt
+data-dir:       data
 
 executable day01
   main-is: Day01.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day01
@@ -23,6 +44,8 @@ executable day01
 
 executable day02
   main-is: Day02.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day02
@@ -36,6 +59,8 @@ executable day02
 
 executable day03
   main-is: Day03.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day03
@@ -49,6 +74,8 @@ executable day03
 
 executable day04
   main-is: Day04.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day04
@@ -62,6 +89,8 @@ executable day04
 
 executable day05
   main-is: Day05.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day05
@@ -75,6 +104,8 @@ executable day05
 
 executable day06
   main-is: Day06.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day06
@@ -88,6 +119,8 @@ executable day06
 
 executable day07
   main-is: Day07.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day07
@@ -101,6 +134,8 @@ executable day07
 
 executable day08
   main-is: Day08.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day08
@@ -114,6 +149,8 @@ executable day08
 
 executable day09
   main-is: Day09.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day09
@@ -127,6 +164,8 @@ executable day09
 
 executable day10
   main-is: Day10.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day10
@@ -140,6 +179,8 @@ executable day10
 
 executable day11
   main-is: Day11.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day11
@@ -153,6 +194,8 @@ executable day11
 
 executable day12
   main-is: Day12.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day12
@@ -166,6 +209,8 @@ executable day12
 
 executable day13
   main-is: Day13.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day13
@@ -179,6 +224,8 @@ executable day13
 
 executable day14
   main-is: Day14.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day14
@@ -192,6 +239,8 @@ executable day14
 
 executable day15
   main-is: Day15.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day15
@@ -205,6 +254,8 @@ executable day15
 
 executable day16
   main-is: Day16.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day16
@@ -218,6 +269,8 @@ executable day16
 
 executable day17
   main-is: Day17.hs
+  other-modules:
+      Paths_aoc
   hs-source-dirs:
       src
   ghc-options: -main-is Day17

@@ -5,6 +5,7 @@ module Day11 (main) where
 import Control.Lens (element, makeLenses, over, (^.))
 import Data.Functor (($>), (<&>))
 import Data.List (nub, sort)
+import Paths_aoc (getDataFileName)
 import qualified Text.Parsec as P
 
 data Operand = Old | Literal Int deriving (Show)
@@ -71,6 +72,6 @@ part2 = run id 10000
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input11.txt"
+  contents <- getDataFileName "input11.txt" >>= readFile
   print $ part1 contents
   print $ part2 contents

@@ -6,6 +6,7 @@ import Data.List (delete, insert, partition)
 import Data.Map ((!))
 import qualified Data.Map as M
 import Data.Maybe (mapMaybe)
+import Paths_aoc (getDataFileName)
 import Text.Parsec ((<|>))
 import qualified Text.Parsec as P
 
@@ -62,6 +63,6 @@ part2 = run 26 ["AA", "AA"]
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input16.txt"
+  contents <- getDataFileName "input16.txt" >>= readFile
   print $ part1 contents
   print $ part2 contents

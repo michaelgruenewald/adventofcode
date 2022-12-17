@@ -1,6 +1,7 @@
 module Day02 (main) where
 
 import Data.Bifunctor
+import Paths_aoc (getDataFileName)
 
 data First = A | B | C deriving (Read)
 
@@ -54,6 +55,6 @@ part2 =
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input02.txt"
+  contents <- getDataFileName "input02.txt" >>= readFile
   print $ part1 contents
   print $ part2 contents

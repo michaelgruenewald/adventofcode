@@ -5,6 +5,7 @@ module Day17 (main) where
 import Data.Maybe (mapMaybe)
 import qualified Data.Set as S
 import Debug.Trace (traceShowId)
+import Paths_aoc (getDataFileName)
 
 type Pos = (Int, Int)
 
@@ -70,6 +71,6 @@ part2 = run 2023
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input17.txt"
+  contents <- getDataFileName "input17.txt" >>= readFile
   print $ part1 contents
   print $ part2 contents

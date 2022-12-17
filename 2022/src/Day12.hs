@@ -5,6 +5,7 @@ import Data.Function (on)
 import Data.Map ((!), (!?))
 import qualified Data.Map as M
 import Data.Maybe (fromJust, isJust)
+import Paths_aoc (getDataFileName)
 
 type Pos = (Int, Int)
 
@@ -44,6 +45,6 @@ part2 = run (`elem` ['S', 'a'])
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input12.txt"
+  contents <- getDataFileName "input12.txt" >>= readFile
   print $ part1 contents
   print $ part2 contents

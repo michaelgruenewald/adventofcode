@@ -6,6 +6,7 @@ import Control.Monad (liftM2)
 import Data.Functor ((<&>))
 import Data.List (find)
 import qualified Data.Set as S
+import Paths_aoc (getDataFileName)
 import qualified Text.Parsec as P
 
 type Pos = (Int, Int)
@@ -59,6 +60,6 @@ part2 s = 1 + fill (fall2 (2 + maximum (S.map snd rocks))) rocks where rocks = S
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input14.txt"
+  contents <- getDataFileName "input14.txt" >>= readFile
   print $ part1 contents
   print $ part2 contents

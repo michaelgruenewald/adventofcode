@@ -1,5 +1,7 @@
 name: aoc
 source-dirs: src
+data-dir: data
+data-files: input*.txt
 dependencies:
 - base >= 4.7 && < 5
 - containers
@@ -7,20 +9,20 @@ dependencies:
 - lens
 - parsec
 executables:
-  day01: { main: Day01, other-modules: [] }
-  day02: { main: Day02, other-modules: [] }
-  day03: { main: Day03, other-modules: [] }
-  day04: { main: Day04, other-modules: [] }
-  day05: { main: Day05, other-modules: [] }
-  day06: { main: Day06, other-modules: [] }
-  day07: { main: Day07, other-modules: [] }
-  day08: { main: Day08, other-modules: [] }
-  day09: { main: Day09, other-modules: [] }
-  day10: { main: Day10, other-modules: [] }
-  day11: { main: Day11, other-modules: [] }
-  day12: { main: Day12, other-modules: [] }
-  day13: { main: Day13, other-modules: [] }
-  day14: { main: Day14, other-modules: [] }
-  day15: { main: Day15, other-modules: [] }
-  day16: { main: Day16, other-modules: [] }
-  day17: { main: Day17, other-modules: [] }
+  day01: { main: Day01, other-modules: [Paths_aoc] }
+  day02: { main: Day02, other-modules: [Paths_aoc] }
+  day03: { main: Day03, other-modules: [Paths_aoc] }
+  day04: { main: Day04, other-modules: [Paths_aoc] }
+  day05: { main: Day05, other-modules: [Paths_aoc] }
+  day06: { main: Day06, other-modules: [Paths_aoc] }
+  day07: { main: Day07, other-modules: [Paths_aoc] }
+  day08: { main: Day08, other-modules: [Paths_aoc] }
+  day09: { main: Day09, other-modules: [Paths_aoc] }
+  day10: { main: Day10, other-modules: [Paths_aoc] }
+  day11: { main: Day11, other-modules: [Paths_aoc] }
+  day12: { main: Day12, other-modules: [Paths_aoc] }
+  day13: { main: Day13, other-modules: [Paths_aoc] }
+  day14: { main: Day14, other-modules: [Paths_aoc] }
+  day15: { main: Day15, other-modules: [Paths_aoc] }
+  day16: { main: Day16, other-modules: [Paths_aoc] }
+  day17: { main: Day17, other-modules: [Paths_aoc] }

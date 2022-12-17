@@ -5,6 +5,7 @@ import Data.Char (digitToInt, isAlpha, isDigit)
 import Data.List (transpose)
 import Data.List.Extra (breakOn)
 import Data.Map (Map, adjust, elems, fromList, (!))
+import Paths_aoc (getDataFileName)
 
 breakOn' :: Eq a => [a] -> [a] -> ([a], [a])
 breakOn' s l = second (drop $ length s) $ breakOn s l
@@ -33,6 +34,6 @@ parse =
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input05.txt"
+  contents <- getDataFileName "input05.txt" >>= readFile
   print $ part1 contents
   print $ part2 contents

@@ -3,6 +3,7 @@ module Day03 (main) where
 import Data.Bifunctor (Bifunctor (bimap))
 import Data.Char (isAsciiLower, isAsciiUpper, ord)
 import Data.List (intersect, nub)
+import Paths_aoc (getDataFileName)
 
 priority :: Char -> Int
 priority c
@@ -29,6 +30,6 @@ part2 = sum . map (priority . only . foldl1 intersect . map nub) . chunks 3 . li
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input03.txt"
+  contents <- getDataFileName "input03.txt" >>= readFile
   print $ part1 contents
   print $ part2 contents

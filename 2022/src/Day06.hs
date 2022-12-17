@@ -1,6 +1,7 @@
 module Day06 (main) where
 
 import Data.List (nub)
+import Paths_aoc (getDataFileName)
 
 firstUnique :: Int -> String -> Int
 firstUnique n s
@@ -15,6 +16,6 @@ part2 = firstUnique 14
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input06.txt"
+  contents <- getDataFileName "input06.txt" >>= readFile
   print $ part1 contents
   print $ part2 contents

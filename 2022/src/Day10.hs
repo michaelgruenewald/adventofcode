@@ -1,6 +1,7 @@
 module Day10 (main) where
 
 import Data.List.Extra (chunksOf, intercalate)
+import Paths_aoc (getDataFileName)
 
 parse :: String -> [[String]]
 parse = map words . lines
@@ -19,6 +20,6 @@ part2 = intercalate "\n" . chunksOf 40 . zipWith (\cycle position -> if abs (cyc
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input10.txt"
+  contents <- getDataFileName "input10.txt" >>= readFile
   print $ part1 contents
   putStrLn $ part2 contents

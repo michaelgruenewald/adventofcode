@@ -2,6 +2,7 @@ module Day04 (main) where
 
 import Data.Bifunctor (Bifunctor (bimap))
 import Data.List (intersect, isSubsequenceOf)
+import Paths_aoc (getDataFileName)
 
 parseRange :: [Char] -> [Int]
 parseRange = uncurry enumFromTo . bimap read (read . tail) . break (== '-')
@@ -17,6 +18,6 @@ part2 = length . filter (not . null . uncurry intersect) . parse
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input04.txt"
+  contents <- getDataFileName "input04.txt" >>= readFile
   print $ part1 contents
   print $ part2 contents

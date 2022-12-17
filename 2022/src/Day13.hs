@@ -3,6 +3,7 @@ module Day13 (main) where
 import Control.Monad (liftM2)
 import Data.Functor ((<&>))
 import Data.List (elemIndices, findIndices, sort)
+import Paths_aoc (getDataFileName)
 import Text.Parsec ((<|>))
 import qualified Text.Parsec as P
 
@@ -38,6 +39,6 @@ part2 = product . map (+ 1) . findIndices (`elem` dividers) . sort . (dividers +
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input13.txt"
+  contents <- getDataFileName "input13.txt" >>= readFile
   print $ part1 contents
   print $ part2 contents

@@ -2,6 +2,7 @@ module Day15 (main) where
 
 import Data.List (nub)
 import qualified Data.Set as S
+import Paths_aoc (getDataFileName)
 import qualified Text.Parsec as P
 
 type Pos = (Int, Int)
@@ -71,6 +72,6 @@ part2 s =
 
 main :: IO ()
 main = do
-  contents <- readFile "src/input15.txt"
+  contents <- getDataFileName "input15.txt" >>= readFile
   print $ part1 contents
   print $ part2 contents
