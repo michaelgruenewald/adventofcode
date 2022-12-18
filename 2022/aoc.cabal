@@ -25,6 +25,7 @@ data-files:
     input15.txt
     input16.txt
     input17.txt
+    input18.txt
 data-dir:       data
 
 executable day01
@@ -274,6 +275,21 @@ executable day17
   hs-source-dirs:
       src
   ghc-options: -main-is Day17
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , extra
+    , lens
+    , parsec
+  default-language: Haskell2010
+
+executable day18
+  main-is: Day18.hs
+  other-modules:
+      Paths_aoc
+  hs-source-dirs:
+      src
+  ghc-options: -main-is Day18
   build-depends:
       base >=4.7 && <5
     , containers

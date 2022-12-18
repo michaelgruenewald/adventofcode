@@ -26,3 +26,4 @@ executables:
   day15: { main: Day15, other-modules: [Paths_aoc] }
   day16: { main: Day16, other-modules: [Paths_aoc] }
   day17: { main: Day17, other-modules: [Paths_aoc] }
+  day18: { main: Day18, other-modules: [Paths_aoc] }
