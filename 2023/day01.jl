@@ -1,20 +1,20 @@
-using Match
 using Test
 
 function part1(lines)
-    sum(map(line -> parse(Int, string(line[findfirst(isdigit, line)], line[findlast(isdigit, line)])), lines))
+    sum(line -> parse(Int, string(line[findfirst(isdigit, line)], line[findlast(isdigit, line)])), lines)
 end
 
 function part2(lines)
-    sum(map(lines) do line
+    sum(lines) do line
         matches = collect(eachmatch(r"(\d)|(one|two|three|four|five|six|seven|eight|nine)", line, overlap=true))
-        foldl((l, r) -> l * 10 + r, map(matches[[begin, end]]) do m
-            @match m.captures begin
-                [d, ::Nothing] => parse(Int, d)
-                [::Nothing, word] => findfirst(==(word), ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"])
+        foldl((l, r) -> l * 10 + r, map(matches[[begin, end]]) do (digit, word)
+            if !isnothing(digit)
+                parse(Int, digit)
+            else
+                findfirst(==(word), ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"])
             end
         end)
-    end)
+    end
 end
 
 function run()
