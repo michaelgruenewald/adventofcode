@@ -8,22 +8,18 @@ function part1(lines)
         good = all(split(rest, "; ")) do s
             all(split(s, r", ")) do m
                 (count, color) = split(m, " ")
-                parse(Int, count) <= MAX_CUBES[color]
+                parse(Int, count) ≤ MAX_CUBES[color]
             end
         end
 
-        if good
-            parse(Int, game_id)
-        else
-            0
-        end
+        good * parse(Int, game_id)
     end
 end
 
 function part2(lines)
     sum(lines) do line
         minimums = Dict()
-        for (count, color) in eachmatch(r"(\d+) (red|green|blue)", line)
+        for (count, color) ∈ eachmatch(r"(\d+) (red|green|blue)", line)
             minimums[color] = max(get(minimums, color, 0), parse(Int, count))
         end
         prod(values(minimums))
