@@ -2,20 +2,18 @@ using Test
 
 function part1(lines)
     sum(lines) do line
-        (winning, own) = match(r"Card *\d+: (.*) [|] (.*)", line)
-        1 << length(intersect(split(winning), split(own))) >> 1
+        1 << (length ∘ intersect)((match(r"Card *\d+: (.*) [|] (.*)", line) .|> split)...) >> 1
     end
 end
 
 function part2(lines)
     matches = map(lines) do line
-        (winning, own) = match(r"Card *\d+: (.*) [|] (.*)", line)
-        length(intersect(split(winning), split(own)))
+        (length ∘ intersect)((match(r"Card *\d+: (.*) [|] (.*)", line) .|> split)...)
     end
 
     cards = fill(1, length(matches))
     for (i, m) in enumerate(matches)
-        cards[i+1:min(i+m, length(cards))] .+= cards[i]
+        cards[i+1:min(i + m, length(cards))] .+= cards[i]
     end
     sum(cards)
 end
