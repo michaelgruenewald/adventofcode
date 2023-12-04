@@ -11,9 +11,11 @@ function part2(lines)
         (length ∘ intersect)((match(r"Card *\d+: (.*) [|] (.*)", line) .|> split)...)
     end
 
-    cards = fill(1, length(matches))
+    n = length(matches)
+
+    cards = fill(1, n)
     for (i, m) in enumerate(matches)
-        cards[i+1:min(i + m, length(cards))] .+= cards[i]
+        cards[i+1:min(i + m, n)] .+= cards[i]
     end
     sum(cards)
 end
