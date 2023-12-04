@@ -18,7 +18,7 @@ function part2(lines)
 end
 
 function run()
-    input = collect(eachline(open("input01.txt")))
+    input = readlines("input01.txt")
     println(part1(input))
     println(part2(input))
 end

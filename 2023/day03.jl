@@ -60,7 +60,7 @@ function part2(lines)
 end
 
 function run()
-    input = collect(eachline(open("input03.txt")))
+    input = readlines("input03.txt")
     println(part1(input))
     println(part2(input))
 end
