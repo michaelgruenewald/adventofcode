@@ -1,14 +1,14 @@
 using Test
 
-xceil(x) = ceil(nextfloat(x))
-xfloor(x) = floor(prevfloat(x))
+nextceil(x) = ceil(nextfloat(x))
+prevfloor(x) = floor(prevfloat(x))
 
 function part1(lines)
     times = map(m -> parse(Int, m.match), eachmatch(r"\d+", lines[1]))
     distances = map(m -> parse(Int, m.match), eachmatch(r"\d+", lines[2]))
 
     prod(zip(times, distances)) do (t, d)
-        length(xceil(-(√(t * t - 4 * d) - t) / 2):xfloor((√(t * t - 4 * d) + t) / 2))
+        length(nextceil(0.5t - 0.5√(t^2 - 4d)):prevfloor(0.5t + 0.5√(t^2 - 4d)))
     end
 end
 
@@ -16,7 +16,7 @@ function part2(lines)
     t = parse(Int, replace(lines[1], r"\D+" => ""))
     d = parse(Int, replace(lines[2], r"\D+" => ""))
 
-    length(xceil(-(√(t * t - 4 * d) - t) / 2):xfloor((√(t * t - 4 * d) + t) / 2))
+    length(nextceil(0.5t - 0.5√(t^2 - 4d)):prevfloor(0.5t + 0.5√(t^2 - 4d)))
 end
 
 function run()
