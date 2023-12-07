@@ -10,26 +10,18 @@ function part1(lines)
     ordered = sort(hands, rev=true, by=((hand, _),) -> begin
         cards = Multiset(hand...)
         cardinalities = Multiset(values(cards)...)
-        rank = if cardinalities == Multiset(5)
-            1
-        elseif cardinalities == Multiset(1, 4)
-            2
-        elseif cardinalities == Multiset(2, 3)
-            3
-        elseif cardinalities == Multiset(1, 1, 3)
-            4
-        elseif cardinalities == Multiset(1, 2, 2)
-            5
-        elseif cardinalities == Multiset(1, 1, 1, 2)
-            6
-        elseif cardinalities == Multiset(1, 1, 1, 1, 1)
-            7
-        else
-            @assert false
-        end
+        by_type = findfirst(==(cardinalities), [
+            Multiset(5),
+            Multiset(1, 4),
+            Multiset(2, 3),
+            Multiset(1, 1, 3),
+            Multiset(1, 2, 2),
+            Multiset(1, 1, 1, 2),
+            Multiset(1, 1, 1, 1, 1),
+        ])
 
-        second = map(c -> findfirst(c, "AKQJT98765432"), collect(hand))
-        (rank, second)
+        by_cards = map(c -> findfirst(c, "AKQJT98765432"), collect(hand))
+        (by_type, by_cards)
     end)
 
     sum(enumerate(ordered)) do (rank, (_, bid))
@@ -51,26 +43,20 @@ function part2(lines)
         delete!(cards, 'J')
 
         cardinalities = Multiset(values(cards)...)
-        rank = if jokers == 5 || cardinalities == Multiset(5 - jokers)
-            1
-        elseif cardinalities == Multiset(1, 4 - jokers)
-            2
-        elseif cardinalities == Multiset(2, 3 - jokers)
-            3
-        elseif cardinalities == Multiset(1, 1, 3 - jokers)
-            4
-        elseif cardinalities == Multiset(1, 2, 2 - jokers)
-            5
-        elseif cardinalities == Multiset(1, 1, 1, 2 - jokers)
-            6
-        elseif cardinalities == Multiset(1, 1, 1, 1, 1)
-            7
-        else
-            @assert false
-        end
 
-        second = map(c -> findfirst(c, "AKQT98765432J"), collect(hand))
-        (rank, second)
+        by_type = findfirst(==(cardinalities), [
+            Multiset(5 - jokers),
+            Multiset(), # just jokers is the worst five of a kind
+            Multiset(1, 4 - jokers),
+            Multiset(2, 3 - jokers),
+            Multiset(1, 1, 3 - jokers),
+            Multiset(1, 2, 2 - jokers),
+            Multiset(1, 1, 1, 2 - jokers),
+            Multiset(1, 1, 1, 1, 1),
+        ])
+
+        by_cards = map(c -> findfirst(c, "AKQT98765432J"), collect(hand))
+        (by_type, by_cards)
     end)
 
     sum(enumerate(ordered)) do (rank, (_, bid))
