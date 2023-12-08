@@ -1,4 +1,4 @@
-using .Iterators: cycle
+using Base.Iterators: cycle
 using Test
 
 function part1(lines)
