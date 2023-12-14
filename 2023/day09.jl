@@ -1,23 +1,19 @@
 using Test
 
 function next_num(nums)
-    nums[end] + (allequal(nums) ? 0 : next_num(diff(nums)))
+    all(==(0), nums) ? 0 : nums[end] + next_num(diff(nums))
 end
 
 function part1(lines)
-    sum(lines) do line
-        next_num(parse.(Int, split(line)))
-    end
+    sum(line -> next_num(parse.(Int, split(line))), lines)
 end
 
 function prev_num(nums)
-    nums[begin] - (allequal(nums) ? 0 : prev_num(diff(nums)))
+    all(==(0), nums) ? 0 : nums[begin] - prev_num(diff(nums))
 end
 
 function part2(lines)
-    sum(lines) do line
-        prev_num(parse.(Int, split(line)))
-    end
+    sum(line -> prev_num(parse.(Int, split(line))), lines)
 end
 
 function run()
