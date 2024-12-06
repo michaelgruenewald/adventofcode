@@ -50,18 +50,26 @@ const Direction = enum {
     }
 };
 
-const Phase = struct { position: Vec2, direction: Direction };
+const Phase = struct {
+    position: Vec2,
+    direction: Direction,
+
+    fn ahead(self: Phase) Vec2 {
+        return self.direction.apply(self.position);
+    }
+};
 
 const Walker = struct {
     map: *const std.AutoHashMap(Vec2, Tile),
     phase: Phase,
 
+    extra_obstacle: ?Vec2 = null,
+
     fn next(self: *Walker) ?Phase {
-        std.debug.assert(self.map.contains(self.phase.position));
-        if (self.map.get(self.phase.direction.apply(self.phase.position)) == .Obstacle) {
+        if ((self.extra_obstacle != null and std.meta.eql(self.extra_obstacle.?, self.phase.ahead())) or self.map.get(self.phase.ahead()) == .Obstacle) {
             self.phase.direction = self.phase.direction.turnRight();
         } else {
-            self.phase.position = self.phase.direction.apply(self.phase.position);
+            self.phase.position = self.phase.ahead();
         }
         return if (self.map.contains(self.phase.position)) self.phase else null;
     }
@@ -87,37 +95,26 @@ fn part2(input: []const u8) !usize {
     var start: Vec2 = undefined;
     try parse(input, &map, &start);
 
-    const start_phase = Phase{ .position = start, .direction = .Up };
-    var seen = std.AutoHashMap(Phase, void).init(a);
-    try seen.put(start_phase, {});
-    {
-        var walker = Walker{ .map = &map, .phase = start_phase };
-        while (walker.next()) |phase|
-            try seen.put(phase, {});
-    }
-
+    var tried = std.AutoHashMap(Vec2, void).init(a);
+    try tried.put(start, {});
     var options = std.AutoHashMap(Vec2, void).init(a);
-    var seen_it = seen.keyIterator();
-    while (seen_it.next()) |from| {
-        const new_obstacle = from.direction.apply(from.position);
-        if (std.meta.eql(new_obstacle, start) or map.get(new_obstacle) != .Free)
+    var walker = Walker{ .map = &map, .phase = .{ .position = start, .direction = .Up } };
+    while (walker.next()) |phase| {
+        if (tried.contains(phase.ahead()))
             continue;
-
-        var modified_map = try map.clone();
-        try modified_map.put(new_obstacle, .Obstacle);
+        try tried.put(phase.ahead(), {});
 
         var been = std.AutoHashMap(Phase, void).init(a);
-        var walker = Walker{ .map = &modified_map, .phase = start_phase };
-        while (walker.next()) |phase| {
-            if (been.contains(phase)) {
-                try options.put(new_obstacle, {});
+        try been.put(phase, {});
+        var test_walker = Walker{ .map = &map, .phase = phase, .extra_obstacle = phase.ahead() };
+        while (test_walker.next()) |p| {
+            if (been.contains(p)) {
+                try options.put(phase.ahead(), {});
                 break;
             } else {
-                try been.put(phase, {});
+                try been.put(p, {});
             }
         }
-
-        modified_map.deinit();
     }
 
     return options.count();
