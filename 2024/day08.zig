@@ -42,10 +42,8 @@ fn part1(input: []const u8) !usize {
     while (freq_iter.next()) |e| {
         for (e.value_ptr.items) |x| {
             for (e.value_ptr.items) |y| {
-                if (@reduce(.And, x == y)) continue;
-                for ([_]Vec2{ x + x - y, y + y - x }) |v|
-                    if (map.contains(v))
-                        try antinodes.put(v, {});
+                if (@reduce(.Or, x != y) and map.contains(x + x - y))
+                    try antinodes.put(x + x - y, {});
             }
         }
     }
@@ -64,13 +62,7 @@ fn part2(input: []const u8) !usize {
             for (e.value_ptr.items) |q| {
                 if (@reduce(.And, p == q)) continue;
                 var s = p;
-                while (map.contains(s)) : (s -= q - p)
-                    if (map.contains(s))
-                        try antinodes.put(s, {});
-                s = p;
-                while (map.contains(s)) : (s += q - p)
-                    if (map.contains(s))
-                        try antinodes.put(s, {});
+                while (map.contains(s)) : (s += q - p) try antinodes.put(s, {});
             }
         }
     }
