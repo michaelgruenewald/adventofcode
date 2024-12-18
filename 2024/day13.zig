@@ -1,7 +1,7 @@
 const std = @import("std");
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-const alloc = gpa.allocator();
+const alloc = if (@import("builtin").is_test) std.testing.allocator else gpa.allocator();
 
 const Vec2 = @Vector(2, isize);
 const Machine = struct { a: Vec2, b: Vec2, p: Vec2 };
@@ -82,5 +82,4 @@ test "examples" {
         \\
     ;
     try std.testing.expectEqual(480, part1(input));
-    std.debug.assert(gpa.deinit() == .ok);
 }

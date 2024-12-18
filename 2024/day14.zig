@@ -1,7 +1,7 @@
 const std = @import("std");
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-const alloc = gpa.allocator();
+const alloc = if (@import("builtin").is_test) std.testing.allocator else gpa.allocator();
 
 const Vec2 = @Vector(2, isize);
 const Robot = struct { p: Vec2, v: Vec2 };
@@ -96,5 +96,4 @@ test "examples" {
         \\
     ;
     try std.testing.expectEqual(12, part1(input, .{ 11, 7 }));
-    std.debug.assert(gpa.deinit() == .ok);
 }

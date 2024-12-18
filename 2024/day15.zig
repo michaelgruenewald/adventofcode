@@ -1,7 +1,7 @@
 const std = @import("std");
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-const alloc = gpa.allocator();
+const alloc = if (@import("builtin").is_test) std.testing.allocator else gpa.allocator();
 
 const Vec2 = @Vector(2, i16);
 const Tile = enum { Free, Box, Obstacle };
@@ -204,5 +204,4 @@ test "examples" {
     ;
     try std.testing.expectEqual(10092, part1(input));
     try std.testing.expectEqual(9021, part2(input));
-    std.debug.assert(gpa.deinit() == .ok);
 }

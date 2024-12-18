@@ -1,12 +1,12 @@
 const std = @import("std");
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-const a = gpa.allocator();
+const a = if (@import("builtin").is_test) std.testing.allocator else gpa.allocator();
 
 const PageNo = u8;
 
 const Rule = struct { l: PageNo, r: PageNo };
-const Input = struct { rules: []Rule, pages: [][]PageNo };
+const Input = struct { rules: std.ArrayList(Rule), pages: std.ArrayList(std.ArrayList(PageNo)) };
 
 fn parse(input: []const u8) !Input {
     var blocks = std.mem.splitSequence(u8, std.mem.trim(u8, input, "\n"), "\n\n");
@@ -21,17 +21,17 @@ fn parse(input: []const u8) !Input {
     }
 
     var page_lines = std.mem.splitScalar(u8, blocks.next().?, '\n');
-    var pages = std.ArrayList([]PageNo).init(a);
+    var pages = std.ArrayList(std.ArrayList(PageNo)).init(a);
     while (page_lines.next()) |line| {
         var it = std.mem.splitScalar(u8, line, ',');
         var pgs = std.ArrayList(PageNo).init(a);
         while (it.next()) |pg| {
             try pgs.append(try std.fmt.parseInt(PageNo, pg, 10));
         }
-        try pages.append(pgs.items);
+        try pages.append(pgs);
     }
 
-    return .{ .rules = rules.items, .pages = pages.items };
+    return .{ .rules = rules, .pages = pages };
 }
 
 fn cmp(context: []Rule, lhs: PageNo, rhs: PageNo) bool {
@@ -44,12 +44,16 @@ fn cmp(context: []Rule, lhs: PageNo, rhs: PageNo) bool {
 
 fn part1(input: []const u8) !usize {
     const i = try parse(input);
+    defer i.pages.deinit();
+    defer for (i.pages.items) |p| p.deinit();
+    defer i.rules.deinit();
 
     var sum: usize = 0;
-    for (i.pages) |pgs| {
-        const scratch = try a.dupe(PageNo, pgs);
-        std.mem.sort(PageNo, scratch, i.rules, cmp);
-        const good = std.mem.eql(PageNo, pgs, scratch);
+    for (i.pages.items) |pgs| {
+        const scratch = try a.dupe(PageNo, pgs.items);
+        defer a.free(scratch);
+        std.mem.sort(PageNo, scratch, i.rules.items, cmp);
+        const good = std.mem.eql(PageNo, pgs.items, scratch);
         if (good)
             sum += scratch[scratch.len / 2];
     }
@@ -59,12 +63,16 @@ fn part1(input: []const u8) !usize {
 
 fn part2(input: []const u8) !usize {
     const i = try parse(input);
+    defer i.pages.deinit();
+    defer for (i.pages.items) |p| p.deinit();
+    defer i.rules.deinit();
 
     var sum: usize = 0;
-    for (i.pages) |pgs| {
-        const scratch = try a.dupe(PageNo, pgs);
-        std.mem.sort(PageNo, scratch, i.rules, cmp);
-        const good = std.mem.eql(PageNo, pgs, scratch);
+    for (i.pages.items) |pgs| {
+        const scratch = try a.dupe(PageNo, pgs.items);
+        defer a.free(scratch);
+        std.mem.sort(PageNo, scratch, i.rules.items, cmp);
+        const good = std.mem.eql(PageNo, pgs.items, scratch);
         if (!good)
             sum += scratch[scratch.len / 2];
     }

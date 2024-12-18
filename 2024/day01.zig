@@ -1,7 +1,7 @@
 const std = @import("std");
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-const a = gpa.allocator();
+const a = if (@import("builtin").is_test) std.testing.allocator else gpa.allocator();
 
 fn parse(input: []const u8) !struct { std.ArrayList(usize), std.ArrayList(usize) } {
     var left = std.ArrayList(usize).init(a);

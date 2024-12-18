@@ -4,7 +4,7 @@ const c = @cImport({
 });
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-const a = gpa.allocator();
+const a = if (@import("builtin").is_test) std.testing.allocator else gpa.allocator();
 
 fn PcreExecIterator(GROUPS: comptime_int) type {
     return struct {

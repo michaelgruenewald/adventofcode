@@ -1,7 +1,7 @@
 const std = @import("std");
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-const a = gpa.allocator();
+const a = if (@import("builtin").is_test) std.testing.allocator else gpa.allocator();
 
 const Vec2 = @Vector(2, i16);
 const Tile = union((enum { Free, Antenna })) { Free, Antenna: u8 };
@@ -35,9 +35,16 @@ fn group_by_freq(map: *const std.AutoHashMap(Vec2, Tile)) !std.AutoHashMap(u8, s
 
 fn part1(input: []const u8) !usize {
     var map = std.AutoHashMap(Vec2, Tile).init(a);
+    defer map.deinit();
     try parse(input, &map);
     var by_freq = try group_by_freq(&map);
+    defer {
+        var by_freq_it = by_freq.valueIterator();
+        while (by_freq_it.next()) |l| l.*.deinit();
+        by_freq.deinit();
+    }
     var antinodes = std.AutoHashMap(Vec2, void).init(a);
+    defer antinodes.deinit();
     var freq_iter = by_freq.iterator();
     while (freq_iter.next()) |e| {
         for (e.value_ptr.items) |x| {
@@ -53,9 +60,16 @@ fn part1(input: []const u8) !usize {
 
 fn part2(input: []const u8) !usize {
     var map = std.AutoHashMap(Vec2, Tile).init(a);
+    defer map.deinit();
     try parse(input, &map);
     var by_freq = try group_by_freq(&map);
+    defer {
+        var by_freq_it = by_freq.valueIterator();
+        while (by_freq_it.next()) |l| l.*.deinit();
+        by_freq.deinit();
+    }
     var antinodes = std.AutoHashMap(Vec2, void).init(a);
+    defer antinodes.deinit();
     var freq_iter = by_freq.iterator();
     while (freq_iter.next()) |e| {
         for (e.value_ptr.items) |p| {

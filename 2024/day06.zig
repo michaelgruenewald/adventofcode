@@ -1,7 +1,7 @@
 const std = @import("std");
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-const a = gpa.allocator();
+const a = if (@import("builtin").is_test) std.testing.allocator else gpa.allocator();
 
 const Vec2 = @Vector(2, i16);
 const Tile = enum { Free, Obstacle };
@@ -77,10 +77,12 @@ const Walker = struct {
 
 fn part1(input: []const u8) !usize {
     var map = std.AutoHashMap(Vec2, Tile).init(a);
+    defer map.deinit();
     var start: Vec2 = undefined;
     try parse(input, &map, &start);
 
     var seen = std.AutoHashMap(Vec2, void).init(a);
+    defer seen.deinit();
     try seen.put(start, {});
     var walker = Walker{ .map = &map, .phase = .{ .position = start, .direction = .Up } };
     while (walker.next()) |phase| {
@@ -92,12 +94,15 @@ fn part1(input: []const u8) !usize {
 
 fn part2(input: []const u8) !usize {
     var map = std.AutoHashMap(Vec2, Tile).init(a);
+    defer map.deinit();
     var start: Vec2 = undefined;
     try parse(input, &map, &start);
 
     var tried = std.AutoHashMap(Vec2, void).init(a);
+    defer tried.deinit();
     try tried.put(start, {});
     var options = std.AutoHashMap(Vec2, void).init(a);
+    defer options.deinit();
     var walker = Walker{ .map = &map, .phase = .{ .position = start, .direction = .Up } };
     while (walker.next()) |phase| {
         if (tried.contains(phase.ahead()))
@@ -105,6 +110,8 @@ fn part2(input: []const u8) !usize {
         try tried.put(phase.ahead(), {});
 
         var been = std.AutoHashMap(Phase, void).init(a);
+        defer been.deinit();
+
         try been.put(phase, {});
         var test_walker = Walker{ .map = &map, .phase = phase, .extra_obstacle = phase.ahead() };
         while (test_walker.next()) |p| {

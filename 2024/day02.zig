@@ -1,7 +1,7 @@
 const std = @import("std");
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-const a = gpa.allocator();
+const a = if (@import("builtin").is_test) std.testing.allocator else gpa.allocator();
 
 fn parse(input: []const u8, into: *std.ArrayList(std.ArrayList(isize))) !void {
     var lines = std.mem.splitSequence(u8, input, "\n");
@@ -16,6 +16,8 @@ fn parse(input: []const u8, into: *std.ArrayList(std.ArrayList(isize))) !void {
 
 fn part1(input: []const u8) !usize {
     var rows = std.ArrayList(std.ArrayList(isize)).init(a);
+    defer rows.deinit();
+    defer for (rows.items) |row| row.deinit();
     try parse(input, &rows);
 
     var total: usize = 0;
@@ -41,6 +43,8 @@ inline fn remap(i: usize, drop: usize) usize {
 
 fn part2(input: []const u8) !usize {
     var rows = std.ArrayList(std.ArrayList(isize)).init(a);
+    defer rows.deinit();
+    defer for (rows.items) |row| row.deinit();
     try parse(input, &rows);
 
     var total: usize = 0;

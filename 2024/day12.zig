@@ -1,7 +1,7 @@
 const std = @import("std");
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-const a = gpa.allocator();
+const a = if (@import("builtin").is_test) std.testing.allocator else gpa.allocator();
 
 const Vec2 = @Vector(2, i16);
 const DIRS = [_]Vec2{ .{ 0, -1 }, .{ 0, 1 }, .{ -1, 0 }, .{ 1, 0 } };
@@ -190,5 +190,4 @@ test "examples" {
     ;
     try std.testing.expectEqual(1930, part1(input));
     try std.testing.expectEqual(1206, part2(input));
-    std.debug.assert(gpa.deinit() == .ok);
 }

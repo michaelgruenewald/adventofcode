@@ -1,7 +1,7 @@
 const std = @import("std");
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-const a = gpa.allocator();
+const a = if (@import("builtin").is_test) std.testing.allocator else gpa.allocator();
 
 const Point = @Vector(2, i16);
 
@@ -19,6 +19,7 @@ fn part1(input: []const u8) !usize {
     const DIRECTIONS = [_]Point{ .{ 1, 0 }, .{ -1, 0 }, .{ 0, 1 }, .{ 0, -1 }, .{ 1, 1 }, .{ -1, 1 }, .{ -1, -1 }, .{ 1, -1 } };
 
     var map = std.AutoHashMap(Point, u8).init(a);
+    defer map.deinit();
     try parse(input, &map);
 
     var total: usize = 0;
@@ -66,6 +67,7 @@ fn part2(input: []const u8) !usize {
     };
 
     var map = std.AutoHashMap(Point, u8).init(a);
+    defer map.deinit();
     try parse(input, &map);
 
     var total: usize = 0;

@@ -1,7 +1,7 @@
 const std = @import("std");
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-const a = gpa.allocator();
+const a = if (@import("builtin").is_test) std.testing.allocator else gpa.allocator();
 
 const Vec2 = @Vector(2, i16);
 
@@ -103,5 +103,4 @@ test "examples" {
     ;
     try std.testing.expectEqual(36, part1(input));
     try std.testing.expectEqual(81, part2(input));
-    std.debug.assert(gpa.deinit() == .ok);
 }

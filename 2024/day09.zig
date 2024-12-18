@@ -1,7 +1,7 @@
 const std = @import("std");
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-const a = gpa.allocator();
+const a = if (@import("builtin").is_test) std.testing.allocator else gpa.allocator();
 
 const Range = struct { id: ?isize = null, size: isize };
 const RangeList = std.DoublyLinkedList(Range);
@@ -19,12 +19,20 @@ fn part1(input: []const u8) !isize {
     }
 
     var final = RangeList{};
+    defer while (final.first) |n| {
+        final.remove(n);
+        a.destroy(n);
+    };
+
     while (work.popFirst()) |item| {
         if (item.data.id) |_| {
             final.append(item);
         } else {
             var last = work.pop().?;
-            while (last.data.id == null) last = work.pop().?;
+            while (last.data.id == null) {
+                a.destroy(last);
+                last = work.pop().?;
+            }
 
             const extra = last.data.size - item.data.size;
             if (extra == 0) {
@@ -43,6 +51,7 @@ fn part1(input: []const u8) !isize {
 
                 final.append(last);
             }
+            a.destroy(item);
         }
     }
 
@@ -59,6 +68,10 @@ fn part1(input: []const u8) !isize {
 
 fn part2(input: []const u8) !isize {
     var blocks = RangeList{};
+    defer while (blocks.first) |n| {
+        blocks.remove(n);
+        a.destroy(n);
+    };
 
     for (input, 0..) |size, idx2| {
         const node = try a.create(RangeList.Node);
@@ -70,6 +83,8 @@ fn part2(input: []const u8) !isize {
     }
 
     const files = try a.alloc(*RangeList.Node, (blocks.len + 1) / 2);
+    defer a.free(files);
+
     {
         var next_file = blocks.first.?;
         for (0..files.len) |i| {
