@@ -4,7 +4,7 @@ var gpa = std.heap.GeneralPurposeAllocator(.{}){};
 const a = if (@import("builtin").is_test) std.testing.allocator else gpa.allocator();
 
 const Vec2 = @Vector(2, i16);
-const Tile = union((enum { Free, Antenna })) { Free, Antenna: u8 };
+const Tile = union(enum) { free, antenna: u8 };
 
 fn parse(input: []const u8, into: *std.AutoHashMap(Vec2, Tile)) !void {
     var lines = std.mem.splitSequence(u8, input, "\n");
@@ -13,7 +13,7 @@ fn parse(input: []const u8, into: *std.AutoHashMap(Vec2, Tile)) !void {
         for (line, 0..) |c, x|
             try into.put(
                 .{ @intCast(x), @intCast(y) },
-                if (c == '.') .{ .Free = {} } else .{ .Antenna = c },
+                if (c == '.') .{ .free = {} } else .{ .antenna = c },
             );
 }
 
@@ -22,12 +22,12 @@ fn group_by_freq(map: *const std.AutoHashMap(Vec2, Tile)) !std.AutoHashMap(u8, s
     var map_iter = map.iterator();
     while (map_iter.next()) |e| {
         switch (e.value_ptr.*) {
-            .Antenna => |f| {
+            .antenna => |f| {
                 const slot = try by_freq.getOrPut(f);
                 if (!slot.found_existing) slot.value_ptr.* = std.ArrayList(Vec2).init(a);
                 try slot.value_ptr.append(e.key_ptr.*);
             },
-            .Free => {},
+            .free => {},
         }
     }
     return by_freq;

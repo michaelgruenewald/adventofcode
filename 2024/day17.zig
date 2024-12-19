@@ -40,7 +40,7 @@ const State = struct {
                     self.ip = operand;
                     continue;
                 },
-                .Out => try output.append(@intCast(self.combo(operand) % 8)),
+                .Out => try output.append(@truncate(self.combo(operand))),
             }
             self.ip += 2;
         }
