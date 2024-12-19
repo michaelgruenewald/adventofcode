@@ -74,8 +74,8 @@ fn part2(input: []const u8, end: Vec2) !Vec2 {
 pub fn main() !void {
     const input = try std.fs.cwd().readFileAlloc(alloc, "input18.txt", ~@as(usize, 0));
 
-    std.debug.print("{d}\n", .{try part1(input, .{ 70, 70 }, 1024)});
-    std.debug.print("{d}\n", .{try part2(input, .{ 70, 70 })});
+    try std.io.getStdOut().writer().print("{d}\n", .{try part1(input, .{ 70, 70 }, 1024)});
+    try std.io.getStdOut().writer().print("{d}\n", .{try part2(input, .{ 70, 70 })});
 }
 
 test "examples" {

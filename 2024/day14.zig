@@ -64,9 +64,9 @@ fn part2(input: []const u8, size: Vec2) !usize {
         for (0..@intCast(size[1])) |y| {
             for (0..@intCast(size[0])) |x| {
                 const p = Vec2{ @intCast(x), @intCast(y) };
-                std.debug.print("{s}", .{if (framebuffer.contains(p)) "X" else "."});
+                try std.io.getStdOut().writer().print("{s}", .{if (framebuffer.contains(p)) "X" else "."});
             }
-            std.debug.print("\n", .{});
+            try std.io.getStdOut().writer().print("\n", .{});
         }
         return i;
     }
@@ -75,8 +75,8 @@ fn part2(input: []const u8, size: Vec2) !usize {
 pub fn main() !void {
     const input = try std.fs.cwd().readFileAlloc(alloc, "input14.txt", ~@as(usize, 0));
 
-    std.debug.print("{d}\n", .{try part1(input, .{ 101, 103 })});
-    std.debug.print("{d}\n", .{try part2(input, .{ 101, 103 })});
+    try std.io.getStdOut().writer().print("{d}\n", .{try part1(input, .{ 101, 103 })});
+    try std.io.getStdOut().writer().print("{d}\n", .{try part2(input, .{ 101, 103 })});
 }
 
 test "examples" {

@@ -128,8 +128,8 @@ fn part2(input: []const u8) !isize {
 pub fn main() !void {
     const input = std.mem.trim(u8, try std.fs.cwd().readFileAlloc(a, "input09.txt", ~@as(usize, 0)), "\n");
 
-    std.debug.print("{d}\n", .{try part1(input)});
-    std.debug.print("{d}\n", .{try part2(input)});
+    try std.io.getStdOut().writer().print("{d}\n", .{try part1(input)});
+    try std.io.getStdOut().writer().print("{d}\n", .{try part2(input)});
 }
 
 test "examples" {
