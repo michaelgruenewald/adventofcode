@@ -23,14 +23,10 @@ fn part1(input: []const u8) !usize {
     var total: usize = 0;
     for (rows.items) |row| {
         const first = row.items[1] - row.items[0];
-        var safe = true;
         for (row.items[0 .. row.items.len - 1], row.items[1..]) |x, y| {
-            if (@abs(y - x) < 1 or @abs(y - x) > 3 or (y - x) * first < 0) {
-                safe = false;
+            if (@abs(y - x) < 1 or @abs(y - x) > 3 or (y - x) * first < 0)
                 break;
-            }
-        }
-        if (safe) {
+        } else {
             total += 1;
         }
     }
@@ -49,20 +45,16 @@ fn part2(input: []const u8) !usize {
 
     var total: usize = 0;
     for (rows.items) |row| {
-        dropping: for (0..row.items.len) |drop| {
+        for (0..row.items.len) |drop| {
             const first = row.items[remap(1, drop)] - row.items[remap(0, drop)];
-            var safe = true;
             for (0..row.items.len - 2) |i| {
                 const x = row.items[remap(i, drop)];
                 const y = row.items[remap(i + 1, drop)];
-                if (@abs(y - x) < 1 or @abs(y - x) > 3 or (y - x) * first < 0) {
-                    safe = false;
+                if (@abs(y - x) < 1 or @abs(y - x) > 3 or (y - x) * first < 0)
                     break;
-                }
-            }
-            if (safe) {
+            } else {
                 total += 1;
-                break :dropping;
+                break;
             }
         }
     }

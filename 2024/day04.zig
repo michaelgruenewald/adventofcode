@@ -27,13 +27,13 @@ fn part1(input: []const u8) !usize {
     while (map.contains(.{ 0, y })) : (y += 1) {
         var x: i16 = 0;
         while (map.contains(.{ x, y })) : (x += 1) {
-            directions: for (DIRECTIONS) |d| {
+            for (DIRECTIONS) |d| {
                 for ("XMAS", 0..) |c, i| {
-                    if (map.get(Point{ x, y } + d * @as(Point, @splat(@intCast(i)))) != c) {
-                        continue :directions;
-                    }
+                    if (map.get(Point{ x, y } + d * @as(Point, @splat(@intCast(i)))) != c)
+                        break;
+                } else {
+                    total += 1;
                 }
-                total += 1;
             }
         }
     }
@@ -75,14 +75,14 @@ fn part2(input: []const u8) !usize {
     while (map.contains(.{ 0, y })) : (y += 1) {
         var x: i16 = 0;
         while (map.contains(.{ x, y })) : (x += 1) {
-            rotations: for ([_]Rotation{ .none, .once, .twice, .thrice }) |r| {
+            for ([_]Rotation{ .none, .once, .twice, .thrice }) |r| {
                 for (XMAS) |symbol| {
                     const rotated = r.apply(symbol.where);
-                    if (map.get(Point{ x, y } + rotated) != symbol.what) {
-                        continue :rotations;
-                    }
+                    if (map.get(Point{ x, y } + rotated) != symbol.what)
+                        break;
+                } else {
+                    total += 1;
                 }
-                total += 1;
             }
         }
     }
